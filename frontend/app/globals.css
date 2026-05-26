@@ -1,0 +1,432 @@
+:root {
+  --bg: #071013;
+  --bg-soft: #132126;
+  --text: #e7f2f6;
+  --accent: #5fbff9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 20% 20%, #0d1f26 0%, transparent 45%),
+    radial-gradient(circle at 80% 10%, #12313d 0%, transparent 35%),
+    var(--bg);
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  gap: 1rem;
+  padding: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.card {
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(19, 33, 38, 0.9), rgba(10, 19, 24, 0.9));
+  padding: 1.2rem;
+}
+
+h1,
+h2 {
+  margin-top: 0;
+}
+
+p,
+li {
+  line-height: 1.5;
+}
+
+.injectButton {
+  border: 1px solid rgba(95, 191, 249, 0.4);
+  background: rgba(95, 191, 249, 0.14);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+}
+
+.injectButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.eventsList {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+  max-height: 280px;
+  overflow: auto;
+}
+
+.eventItem {
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 10px;
+  padding: 0.6rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.eventMeta {
+  color: rgba(231, 242, 246, 0.7);
+  font-size: 0.85rem;
+}
+
+.replayControls {
+  margin-top: 1rem;
+  border-top: 1px solid rgba(95, 191, 249, 0.2);
+  padding-top: 0.9rem;
+}
+
+.replayLabel {
+  display: block;
+  margin-top: 0.5rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.replaySelect {
+  width: 100%;
+  border: 1px solid rgba(95, 191, 249, 0.35);
+  background: rgba(7, 16, 19, 0.85);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0.45rem 0.55rem;
+}
+
+.replayButtons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.6rem;
+}
+
+.timelineList {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.timelineItem {
+  border-radius: 10px;
+  padding: 0.55rem;
+  border: 1px solid rgba(95, 191, 249, 0.2);
+}
+
+.timeline-pending {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.timeline-active {
+  background: rgba(95, 191, 249, 0.12);
+  border-color: rgba(95, 191, 249, 0.6);
+}
+
+.timeline-done {
+  background: rgba(79, 201, 127, 0.12);
+  border-color: rgba(79, 201, 127, 0.45);
+}
+
+.trendPanel {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.trendSpan2 {
+  grid-column: span 2;
+}
+
+.trendKpis {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.trendKpiCard {
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.55rem;
+}
+
+.trendKpiCard h3 {
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.trendKpiCard p {
+  margin: 0.2rem 0;
+}
+
+.trendCharts {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.trendChartCard {
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.55rem;
+}
+
+.trendChartCard h3 {
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.trendChartCard svg {
+  width: 100%;
+  height: 100px;
+  border: 1px solid rgba(95, 191, 249, 0.16);
+  border-radius: 8px;
+  background: rgba(7, 16, 19, 0.55);
+}
+
+.trendLineBaseline {
+  fill: none;
+  stroke: #f59f45;
+  stroke-width: 2.4;
+}
+
+.trendLineIris {
+  fill: none;
+  stroke: #29c4b7;
+  stroke-width: 2.4;
+}
+
+.trendLegend {
+  margin-top: 0.35rem;
+  margin-bottom: 0;
+  color: rgba(231, 242, 246, 0.78);
+  font-size: 0.82rem;
+}
+
+.learningDiagramShell {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 2.2fr) minmax(280px, 0.95fr);
+  margin-top: 1rem;
+}
+
+.learningModeToolbar {
+  grid-column: 1 / -1;
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(19, 33, 38, 0.95), rgba(10, 19, 24, 0.95));
+  padding: 0.75rem;
+}
+
+.learningModeButtons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.learningModeButton {
+  border: 1px solid rgba(95, 191, 249, 0.35);
+  background: rgba(7, 16, 19, 0.7);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.learningModeButton.is-active {
+  background: rgba(95, 191, 249, 0.2);
+  border-color: rgba(95, 191, 249, 0.75);
+}
+
+.learningLegend {
+  margin: 0.4rem 0 0;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+}
+
+.legendDot {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legendDot::before {
+  content: "";
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.legendBaseline::before {
+  background: #f59f45;
+}
+
+.legendIris::before {
+  background: #29c4b7;
+}
+
+.legendShared::before {
+  background: #5fbff9;
+}
+
+.learningPlaybackBar {
+  margin-top: 0.7rem;
+  border-top: 1px solid rgba(95, 191, 249, 0.18);
+  padding-top: 0.65rem;
+}
+
+.learningPlaybackButtons {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.learningPlaybackButtons .learningModeButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.learningGuidedOverlay {
+  margin-top: 0.65rem;
+  border: 1px solid rgba(95, 191, 249, 0.28);
+  border-radius: 12px;
+  background: rgba(7, 16, 19, 0.62);
+  padding: 0.7rem;
+}
+
+.learningGuidedOverlay h4 {
+  margin: 0.1rem 0 0.35rem;
+}
+
+.learningGuidedOverlay p {
+  margin: 0.2rem 0;
+}
+
+.learningDiagramCanvas {
+  min-height: 620px;
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 16px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(95, 191, 249, 0.08), transparent 34%),
+    rgba(7, 16, 19, 0.7);
+}
+
+.learningDiagramCanvas .react-flow__renderer,
+.learningDiagramCanvas .react-flow__pane {
+  background: transparent;
+}
+
+.learningDiagramCanvas .react-flow__node {
+  white-space: pre-line;
+  text-align: left;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.learningDiagramCanvas .react-flow__node.selected {
+  outline: none;
+}
+
+.learningDiagramCanvas .react-flow__controls,
+.learningDiagramCanvas .react-flow__minimap {
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(7, 16, 19, 0.92);
+}
+
+.learningInspectorCard {
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(13, 31, 38, 0.96), rgba(7, 16, 19, 0.96));
+  padding: 1rem;
+}
+
+.learningInspectorEyebrow {
+  margin: 0 0 0.5rem;
+  color: rgba(95, 191, 249, 0.82);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.learningInspectorSection + .learningInspectorSection {
+  margin-top: 0.9rem;
+}
+
+.learningInspectorSection h4 {
+  margin-bottom: 0.35rem;
+}
+
+.learningInspectorSection p {
+  margin: 0;
+}
+
+.learningInspectorSection ul {
+  padding-left: 1.05rem;
+  margin: 0;
+}
+
+.learningInfoGrid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.learningInfoCard {
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 12px;
+  background: rgba(7, 16, 19, 0.45);
+  padding: 0.7rem;
+}
+
+.learningInfoCard h3 {
+  margin-top: 0;
+  margin-bottom: 0.45rem;
+  font-size: 0.95rem;
+}
+
+.learningInfoCard p {
+  margin: 0.2rem 0;
+}
+
+.learningInfoCard ul {
+  margin: 0;
+  padding-left: 1.05rem;
+}
+
+.learningInfoCardWide {
+  grid-column: span 2;
+}
+
+@media (max-width: 900px) {
+  .trendSpan2 {
+    grid-column: auto;
+  }
+
+  .learningDiagramShell {
+    grid-template-columns: 1fr;
+  }
+
+  .learningDiagramCanvas {
+    min-height: 520px;
+  }
+
+  .learningInfoCardWide {
+    grid-column: auto;
+  }
+}

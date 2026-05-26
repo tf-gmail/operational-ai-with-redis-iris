@@ -1,0 +1,68 @@
+[
+  {
+    "timestamp": "2026-05-26T08:47:41.783091+00:00",
+    "source": "local",
+    "report": "latest.json",
+    "iterations": 5,
+    "baseline": {
+      "latency_ms_avg": 5.14,
+      "latency_ms_p95": 17.4,
+      "prompt_tokens_avg": 2620.0
+    },
+    "iris": {
+      "latency_ms_avg": 2.13,
+      "latency_ms_p95": 2.68,
+      "prompt_tokens_avg": 1160.0
+    }
+  },
+  {
+    "timestamp": "2026-05-26T08:47:41.783719+00:00",
+    "source": "local",
+    "report": "ci-latest.json",
+    "iterations": 3,
+    "baseline": {
+      "latency_ms_avg": 6.61,
+      "latency_ms_p95": 15.89,
+      "prompt_tokens_avg": 2620.0
+    },
+    "iris": {
+      "latency_ms_avg": 2.18,
+      "latency_ms_p95": 2.33,
+      "prompt_tokens_avg": 1160.0
+    }
+  },
+  {
+    "timestamp": "2026-05-26T08:47:41.783861+00:00",
+    "source": "local",
+    "report": "ci-extended.json",
+    "iterations": 20,
+    "baseline": {
+      "latency_ms_avg": 2.8,
+      "latency_ms_p95": 2.95,
+      "prompt_tokens_avg": 2620.0
+    },
+    "iris": {
+      "latency_ms_avg": 2.05,
+      "latency_ms_p95": 2.77,
+      "prompt_tokens_avg": 1160.0
+    }
+  },
+  {
+    "timestamp": "2026-05-26T08:50:48.881169+00:00",
+    "source": "local-concurrent",
+    "report": "concurrent-latest.json",
+    "iterations": null,
+    "baseline": {
+      "errors": 0,
+      "latency_ms_avg": 22.36,
+      "latency_ms_p95": 48.03,
+      "prompt_tokens_avg": 2620.0
+    },
+    "iris": {
+      "errors": 0,
+      "latency_ms_avg": 5.62,
+      "latency_ms_p95": 9.0,
+      "prompt_tokens_avg": 1160.0
+    }
+  }
+]

@@ -1,0 +1,126 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      run_extended:
+        description: "Run extended performance scenario"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+  schedule:
+    - cron: "0 4 * * 1"
+
+jobs:
+  smoke-validate:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Start backend and redis containers
+        run: docker compose up -d --build backend redis
+
+      - name: Wait for backend health endpoint
+        run: |
+          for i in {1..40}; do
+            if curl -fsS http://localhost:8000/health >/dev/null; then
+              echo "Backend is healthy"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Backend did not become healthy in time"
+          docker compose logs backend
+          exit 1
+
+      - name: Redis capability verification
+        run: docker compose exec -T backend python scripts/verify_redis_stack.py --host redis --port 6379
+
+      - name: Endpoint benchmark smoke
+        run: python3 benchmarks/run_benchmark.py --base-url http://localhost:8000 --iterations 3 --output benchmarks/reports/ci-latest.json
+
+      - name: Show benchmark report
+        run: cat benchmarks/reports/ci-latest.json
+
+      - name: Append trend snapshot
+        run: python3 benchmarks/update_trend_snapshot.py --reports benchmarks/reports/ci-latest.json --source ci-smoke
+
+      - name: Regression gate
+        run: python3 benchmarks/check_regression.py --profile strict --current benchmarks/reports/ci-latest.json --baseline benchmarks/reports/regression-baseline.json
+
+      - name: Upload smoke benchmark artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-smoke-reports
+          path: |
+            benchmarks/reports/ci-latest.json
+            benchmarks/reports/trend-history.json
+          if-no-files-found: error
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down -v
+
+  extended-validate:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.run_extended == 'true')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Start backend and redis containers
+        run: docker compose up -d --build backend redis
+
+      - name: Wait for backend health endpoint
+        run: |
+          for i in {1..40}; do
+            if curl -fsS http://localhost:8000/health >/dev/null; then
+              echo "Backend is healthy"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Backend did not become healthy in time"
+          docker compose logs backend
+          exit 1
+
+      - name: Redis capability verification
+        run: docker compose exec -T backend python scripts/verify_redis_stack.py --host redis --port 6379
+
+      - name: Endpoint benchmark extended
+        run: python3 benchmarks/run_benchmark.py --base-url http://localhost:8000 --iterations 20 --output benchmarks/reports/ci-extended.json
+
+      - name: Endpoint benchmark concurrent scenario
+        run: python3 benchmarks/run_concurrent_benchmark.py --base-url http://localhost:8000 --workers 8 --rounds 5 --output benchmarks/reports/concurrent-latest.json
+
+      - name: Show extended benchmark report
+        run: |
+          cat benchmarks/reports/ci-extended.json
+          cat benchmarks/reports/concurrent-latest.json
+
+      - name: Append extended trend snapshots
+        run: python3 benchmarks/update_trend_snapshot.py --reports benchmarks/reports/ci-latest.json benchmarks/reports/ci-extended.json benchmarks/reports/concurrent-latest.json --source ci-extended
+
+      - name: Upload extended benchmark artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-extended-reports
+          path: |
+            benchmarks/reports/ci-extended.json
+            benchmarks/reports/concurrent-latest.json
+            benchmarks/reports/trend-history.json
+          if-no-files-found: error
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down -v

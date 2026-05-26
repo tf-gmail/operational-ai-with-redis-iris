@@ -1,0 +1,58 @@
+{
+  "customer": {
+    "id": "cust-acme",
+    "name": "Acme Corp",
+    "arr": 480000,
+    "renewal_date": "2026-07-15",
+    "risk_level": "high",
+    "health_score": 41,
+    "account_owner": "Sofia Patel"
+  },
+  "stakeholders": [
+    {
+      "name": "Jordan Lee",
+      "role": "VP Engineering",
+      "contact": "jordan.lee@acme.example",
+      "preference": "Executive summaries first"
+    },
+    {
+      "name": "Morgan Blake",
+      "role": "Director of Platform",
+      "contact": "morgan.blake@acme.example",
+      "preference": "Action plan with owners and ETA"
+    }
+  ],
+  "incidents": [
+    {
+      "incident_id": "inc-2026-0412",
+      "service": "search-api",
+      "status": "investigating",
+      "summary": "Search API p95 latency exceeded 1.8s after deployment.",
+      "severity": "sev-1",
+      "updated_at": "2026-05-26T08:00:00Z"
+    }
+  ],
+  "tickets": [
+    {
+      "ticket_id": "tkt-009182",
+      "severity": "sev-1",
+      "summary": "Customer reports repeated outages and renewal concern.",
+      "state": "open"
+    },
+    {
+      "ticket_id": "tkt-009111",
+      "severity": "sev-2",
+      "summary": "Escalation requested after prior latency breach.",
+      "state": "closed"
+    }
+  ],
+  "memories": [
+    "Customer was promised executive escalation if latency issues recur.",
+    "Acme prefers concise executive communication over verbose technical detail."
+  ],
+  "usage": {
+    "trend": "declining",
+    "adoption_change_30d": -0.11,
+    "weekly_active_users": 1380
+  }
+}

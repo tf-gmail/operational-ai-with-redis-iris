@@ -1,0 +1,14 @@
+{
+  "iterations": 20,
+  "base_url": "http://localhost:8000",
+  "baseline": {
+    "latency_ms_avg": 2.8,
+    "latency_ms_p95": 2.95,
+    "prompt_tokens_avg": 2620.0
+  },
+  "iris": {
+    "latency_ms_avg": 2.05,
+    "latency_ms_p95": 2.77,
+    "prompt_tokens_avg": 1160.0
+  }
+}
