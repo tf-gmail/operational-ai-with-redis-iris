@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from redis import Redis
+from app.redis_client import get_redis_connection_config
 
 
 DEFAULT_SYNC_SECONDS = 45
@@ -41,13 +41,11 @@ class RedisContext:
 
 class RedisIRISTools:
     def __init__(self) -> None:
-        host = os.getenv("REDIS_HOST", "redis")
-        port = int(os.getenv("REDIS_PORT", "6379"))
+        self._redis_config = get_redis_connection_config()
         self.cache_ttl_seconds = int(os.getenv("REDIS_LANGCACHE_TTL_SECONDS", str(DEFAULT_CACHE_TTL_SECONDS)))
         self.max_customers = int(os.getenv("RDI_MAX_CUSTOMERS", str(DEFAULT_RDI_MAX_CUSTOMERS)))
         self.seed_path = self._resolve_seed_path()
-        self._client = Redis(host=host, port=port, decode_responses=True)
-        self._client_binary = Redis(host=host, port=port, decode_responses=False)
+        self._client, self._client_binary = self._redis_config.create_client_pair()
         self._sync_lock = asyncio.Lock()
         self._last_sync_stats: dict[str, Any] = {
             "status": "idle",

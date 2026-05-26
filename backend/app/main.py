@@ -25,8 +25,11 @@ from app.learning_mode_data import (
     get_learning_qa_payload,
     get_learning_summary_handout_payload,
 )
+from app.redis_client import get_redis_connection_config
 from app.redis_iris_tools import RDISyncLoop
 from app.replay_templates import ReplayTemplate, get_replay_template, list_replay_templates
+from app.runtime_state import get_runtime_state_store
+from app.state_contracts import to_event_record_contract
 from app.workflows import get_redis_tools
 from app.workflows import run_baseline_workflow, run_iris_workflow
 
@@ -115,6 +118,7 @@ rdi_sync_loop: RDISyncLoop | None = None
 
 
 async def publish_operational_event(event: dict[str, Any]) -> dict[str, Any]:
+    event = to_event_record_contract(event)
     tools = get_redis_tools()
     if tools is not None:
         try:
@@ -127,6 +131,29 @@ async def publish_operational_event(event: dict[str, Any]) -> dict[str, Any]:
     return event
 
 
+async def get_recent_operational_events(limit: int = 50) -> list[dict[str, Any]]:
+    local_events = await event_bus.recent()
+    tools = get_redis_tools()
+    if tools is None:
+        return local_events[-limit:]
+
+    try:
+        stream_events = tools.get_recent_operational_events(customer=None, limit=limit)
+    except Exception:
+        return local_events[-limit:]
+
+    merged: dict[str, dict[str, Any]] = {}
+    for event in local_events + stream_events:
+        if not isinstance(event, dict):
+            continue
+        event = to_event_record_contract(event)
+        event_id = str(event.get("redis_stream_id") or event.get("event_id") or "")
+        key = event_id or f"{event.get('event_type', '')}:{event.get('status', '')}:{event.get('timestamp', '')}"
+        merged[key] = event
+
+    return sorted(merged.values(), key=lambda row: str(row.get("timestamp", "")), reverse=True)[:limit]
+
+
 def _build_event(
     event_type: str,
     status: str,
@@ -135,7 +162,7 @@ def _build_event(
     source: str,
     replay_metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    event = {
+    event: dict[str, Any] = {
         "event_id": f"evt-{datetime.now(timezone.utc).timestamp()}",
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "event_type": event_type,
@@ -146,7 +173,7 @@ def _build_event(
     }
     if replay_metadata:
         event["replay"] = replay_metadata
-    return event
+    return to_event_record_contract(event)
 
 
 class ReplayManager:
@@ -154,6 +181,29 @@ class ReplayManager:
         self._runs: dict[str, dict[str, Any]] = {}
         self._tasks: dict[str, asyncio.Task[None]] = {}
         self._lock = asyncio.Lock()
+        self._state_store = get_runtime_state_store()
+
+    def _persist_run_state(self, run_state: dict[str, Any]) -> None:
+        if self._state_store is None:
+            return
+        self._state_store.save_replay_run(run_state)
+
+    def _load_shared_run_state(self, run_id: str) -> dict[str, Any] | None:
+        if self._state_store is None:
+            return None
+        return self._state_store.load_replay_run(run_id)
+
+    def _mark_cancellation_requested(self, run_state: dict[str, Any]) -> dict[str, Any]:
+        if run_state.get("status") == "running":
+            run_state["status"] = "cancellation_requested"
+        self._persist_run_state(run_state)
+        return run_state
+
+    def _is_cancellation_requested(self, run_id: str) -> bool:
+        shared = self._load_shared_run_state(run_id)
+        if not shared:
+            return False
+        return str(shared.get("status", "")) == "cancellation_requested"
 
     async def execute(self, payload: ReplayExecuteRequest) -> dict[str, Any]:
         template = get_replay_template(payload.template_id)
@@ -227,6 +277,7 @@ class ReplayManager:
             "template_name": template.name,
             "status": "running",
             "customer": customer,
+            "executor": os.getenv("HOSTNAME", "local"),
             "started_at": datetime.now(timezone.utc).isoformat(),
             "completed_at": None,
             "step_count": len(template.steps),
@@ -236,6 +287,7 @@ class ReplayManager:
 
         async with self._lock:
             self._runs[run_id] = run_state
+        self._persist_run_state(run_state)
 
         task = asyncio.create_task(self._run_template(run_id, template, customer, payload.speed_multiplier))
         async with self._lock:
@@ -256,8 +308,14 @@ class ReplayManager:
     ) -> None:
         try:
             for step_index, step in enumerate(template.steps):
+                if self._is_cancellation_requested(run_id):
+                    raise asyncio.CancelledError()
+
                 delay_seconds = (step.delay_ms / 1000.0) / speed_multiplier
                 await asyncio.sleep(delay_seconds)
+
+                if self._is_cancellation_requested(run_id):
+                    raise asyncio.CancelledError()
 
                 event = _build_event(
                     event_type=step.event_type,
@@ -282,18 +340,21 @@ class ReplayManager:
                         return
                     run_state["last_step_index"] = step_index
                     run_state["published_events"].append(event)
+                    self._persist_run_state(run_state)
 
             async with self._lock:
                 run_state = self._runs.get(run_id)
                 if run_state is not None:
                     run_state["status"] = "completed"
                     run_state["completed_at"] = datetime.now(timezone.utc).isoformat()
+                    self._persist_run_state(run_state)
         except asyncio.CancelledError:
             async with self._lock:
                 run_state = self._runs.get(run_id)
                 if run_state is not None:
                     run_state["status"] = "cancelled"
                     run_state["completed_at"] = datetime.now(timezone.utc).isoformat()
+                    self._persist_run_state(run_state)
             raise
         except Exception:
             async with self._lock:
@@ -301,6 +362,7 @@ class ReplayManager:
                 if run_state is not None:
                     run_state["status"] = "error"
                     run_state["completed_at"] = datetime.now(timezone.utc).isoformat()
+                    self._persist_run_state(run_state)
         finally:
             async with self._lock:
                 self._tasks.pop(run_id, None)
@@ -309,7 +371,10 @@ class ReplayManager:
         async with self._lock:
             run = self._runs.get(run_id)
             if run is None:
-                return None
+                shared = self._load_shared_run_state(run_id)
+                if shared is None:
+                    return None
+                return dict(shared)
             return dict(run)
 
     async def cancel_run(self, run_id: str) -> dict[str, Any]:
@@ -318,8 +383,17 @@ class ReplayManager:
             if task is None:
                 run = self._runs.get(run_id)
                 if run is None:
-                    return {"status": "not_found", "details": f"Unknown run_id: {run_id}"}
-                return {"status": "noop", "details": f"Run {run_id} is not running"}
+                    shared = self._load_shared_run_state(run_id)
+                    if shared is None:
+                        return {"status": "not_found", "details": f"Unknown run_id: {run_id}"}
+                    shared = self._mark_cancellation_requested(shared)
+                    return {"status": "accepted", "details": f"Cancellation requested for {run_id}", "run": shared}
+                run = self._mark_cancellation_requested(run)
+                return {"status": "accepted", "details": f"Cancellation requested for {run_id}", "run": run}
+
+            run = self._runs.get(run_id)
+            if run is not None:
+                self._mark_cancellation_requested(run)
             task.cancel()
         return {"status": "accepted", "details": f"Cancellation requested for {run_id}"}
 
@@ -364,9 +438,9 @@ def modes() -> dict[str, list[str]]:
 @app.get("/api/config")
 def config() -> dict[str, str]:
     redis_tools = get_redis_tools()
+    redis_config = get_redis_connection_config()
     return {
-        "redis_host": os.getenv("REDIS_HOST", "redis"),
-        "redis_port": os.getenv("REDIS_PORT", "6379"),
+        **redis_config.public_config(),
         "redis_tools_enabled": "true" if redis_tools is not None else "false",
     }
 
@@ -412,7 +486,7 @@ def run_baseline(payload: RunRequest) -> RunResult:
 
 @app.post("/api/run/iris", response_model=RunResult)
 async def run_iris(payload: RunRequest) -> RunResult:
-    recent = await event_bus.recent()
+    recent = await get_recent_operational_events(limit=50)
     result = run_iris_workflow(payload.customer, payload.message, recent_events=recent)
     return RunResult(
         mode="iris",
@@ -424,7 +498,7 @@ async def run_iris(payload: RunRequest) -> RunResult:
 
 @app.get("/api/events/recent")
 async def recent_events() -> dict[str, list[dict[str, Any]]]:
-    return {"events": await event_bus.recent()}
+    return {"events": await get_recent_operational_events(limit=50)}
 
 
 @app.post("/api/events/inject")

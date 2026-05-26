@@ -16,8 +16,19 @@ services:
       - ./data:/data:ro
     container_name: operational-ai-backend
     environment:
+      - REDIS_URL=${REDIS_URL:-}
       - REDIS_HOST=${REDIS_HOST:-redis}
       - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_DB=${REDIS_DB:-0}
+      - REDIS_USERNAME=${REDIS_USERNAME:-}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - REDIS_TLS=${REDIS_TLS:-false}
+      - REDIS_TLS_INSECURE=${REDIS_TLS_INSECURE:-false}
+      - REDIS_TLS_CA_CERT=${REDIS_TLS_CA_CERT:-}
+      - REDIS_TLS_CLIENT_CERT=${REDIS_TLS_CLIENT_CERT:-}
+      - REDIS_TLS_CLIENT_KEY=${REDIS_TLS_CLIENT_KEY:-}
+      - BASELINE_STATE_TTL_SECONDS=${BASELINE_STATE_TTL_SECONDS:-86400}
+      - REPLAY_STATE_TTL_SECONDS=${REPLAY_STATE_TTL_SECONDS:-14400}
     ports:
       - "${BACKEND_PORT:-8000}:8000"
     depends_on:

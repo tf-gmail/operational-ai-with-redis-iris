@@ -2,13 +2,14 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timezone
 from pathlib import Path
 from time import perf_counter
 from typing import Any
 
+from app.context_layer import apply_redis_postprocessing, build_context_packet
 from app.langgraph_pipeline import run_baseline_graph, run_iris_graph
-from app.redis_iris_tools import RedisIRISTools, merge_seed_with_redis
+from app.redis_iris_tools import RedisIRISTools
+from app.runtime_state import get_runtime_state_store
 
 
 _REDIS_TOOLS: RedisIRISTools | None = None
@@ -150,14 +151,22 @@ def load_acme_seed() -> dict[str, Any]:
 def run_baseline_workflow(customer: str, message: str) -> dict[str, Any]:
     seed = load_acme_seed()
     started_at = perf_counter()
-    session = _BASELINE_LOCAL_MEMORY.setdefault(
-        customer,
-        {
-            "history": [],
-            "turn_count": 0,
-            "last_summary": "",
-        },
-    )
+    shared_state = get_runtime_state_store()
+    using_shared_state = shared_state is not None
+
+    session = None
+    if shared_state is not None:
+        session = shared_state.load_baseline_session(customer)
+
+    if session is None:
+        session = _BASELINE_LOCAL_MEMORY.setdefault(
+            customer,
+            {
+                "history": [],
+                "turn_count": 0,
+                "last_summary": "",
+            },
+        )
 
     history = list(session.get("history", []))[-6:]
     local_state = {
@@ -181,8 +190,16 @@ def run_baseline_workflow(customer: str, message: str) -> dict[str, Any]:
     session["turn_count"] = int(local_state["turn_count"]) + 1
     session["last_summary"] = str(result.get("summary", ""))
 
+    if shared_state is not None:
+        shared_state.save_baseline_session(customer, session)
+
     baseline_signals = list(result.get("context_signals", []))
     baseline_signals.append("baseline-local-memory-write")
+    if using_shared_state:
+        baseline_signals.append("baseline-shared-state-read")
+        baseline_signals.append("baseline-shared-state-write")
+    else:
+        baseline_signals.append("baseline-local-memory-fallback")
     result["context_signals"] = baseline_signals
     return _enrich_runtime_metrics(result, message=message, started_at=started_at, mode="baseline")
 
@@ -207,98 +224,34 @@ def run_iris_workflow(
         except Exception:
             pass
 
-    redis_signals: list[str] = []
-    customer_id: str | None = None
-    combined_recent_events = list(recent_events or [])
-
-    if tools is not None:
-        try:
-            context = tools.retrieve_context(customer, query_text=message)
-            seed = merge_seed_with_redis(seed, context)
-            customer_id = context.customer_id
-
-            stream_events = tools.get_recent_operational_events(customer=customer, limit=20)
-            if stream_events:
-                redis_signals.append("redis-streams-context-hit")
-                redis_signals.append(f"redis-streams-context-count={len(stream_events)}")
-            else:
-                redis_signals.append("redis-streams-context-empty")
-
-            event_map: dict[str, dict[str, Any]] = {}
-            for event in combined_recent_events + stream_events:
-                if not isinstance(event, dict):
-                    continue
-                event_id = str(event.get("redis_stream_id") or event.get("event_id") or "")
-                key = event_id or f"{event.get('event_type', '')}:{event.get('status', '')}:{event.get('timestamp', '')}"
-                event_map[key] = event
-
-            combined_recent_events = sorted(
-                event_map.values(),
-                key=lambda row: str(row.get("timestamp", "")),
-                reverse=True,
-            )[:30]
-
-            if context.customer:
-                redis_signals.append("redis-context-retriever-customer")
-            if context.incidents or context.tickets:
-                redis_signals.append("redis-context-retriever-operational")
-            if context.similar_incidents:
-                redis_signals.append("redis-vector-similar-incidents")
-            if context.memories:
-                redis_signals.append("redis-agent-memory-hit")
-            if context.workflow_state:
-                redis_signals.append("redis-shared-workflow-state-hit")
-            if context.retrieval_backend.startswith("ft.search"):
-                redis_signals.append("redis-ft-search-context")
-        except Exception:
-            redis_signals.append("redis-context-unavailable")
+    context_packet = build_context_packet(
+        customer=customer,
+        message=message,
+        base_seed=seed,
+        recent_events=recent_events,
+        tools=tools,
+    )
+    seed = context_packet.seed
 
     result = run_iris_graph(
         customer=customer,
         message=message,
         seed=seed,
-        recent_events=combined_recent_events,
+        recent_events=context_packet.recent_events,
     )
 
     merged_signals = list(result.get("context_signals", []))
-    merged_signals.extend(redis_signals)
+    merged_signals.extend(context_packet.context_signals)
     result["context_signals"] = merged_signals
 
-    if tools is not None:
-        try:
-            if customer_id:
-                tools.append_memory(customer_id, f"customer-message:{message}")
-                result["context_signals"].append("redis-agent-memory-write")
-
-                extracted_facts = tools.extract_memory_facts(
-                    customer_message=message,
-                    response_summary=str(result.get("summary", "")),
-                )
-                if extracted_facts:
-                    for fact in extracted_facts:
-                        tools.append_memory(customer_id, fact, kind="long")
-                    result["context_signals"].append("redis-agent-memory-extract")
-                    result["context_signals"].append(
-                        f"redis-agent-memory-longterm-write={len(extracted_facts)}"
-                    )
-
-                prior_state = tools.get_shared_workflow_state(customer_id) or {}
-                next_turn = int(prior_state.get("turn_count", 0)) + 1
-                tools.set_shared_workflow_state(
-                    customer_id,
-                    {
-                        "turn_count": next_turn,
-                        "last_mode": "iris",
-                        "last_message": message,
-                        "last_summary": str(result.get("summary", "")),
-                        "updated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-                    },
-                )
-                result["context_signals"].append("redis-shared-workflow-state-write")
-                result["context_signals"].append(f"redis-shared-workflow-turn={next_turn}")
-            tools.set_cached_response(customer, message, result)
-            result["context_signals"].append("redis-langcache-store")
-        except Exception:
-            result["context_signals"].append("redis-postprocessing-unavailable")
+    result["context_signals"].extend(
+        apply_redis_postprocessing(
+            tools=tools,
+            customer=customer,
+            customer_id=context_packet.customer_id,
+            message=message,
+            result=result,
+        )
+    )
 
     return _enrich_runtime_metrics(result, message=message, started_at=started_at, mode="iris")

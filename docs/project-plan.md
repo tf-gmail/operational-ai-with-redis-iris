@@ -1302,13 +1302,139 @@ Execution Status:
 - [x] Step 4 complete
 - [x] Step 5 complete
 
+## Current Execution Plan (Redis Abstraction Layer Slice)
+
+Epic/Task Reference:
+
+- EPIC 7 — Azure Readiness
+- Task 7.1 — Redis Abstraction Layer
+
+1. Add a centralized Redis client abstraction with a shared env-driven configuration model.
+2. Support both REDIS_URL and host/port/password inputs for local and Azure compatibility.
+3. Add TLS-aware configuration paths (including rediss and explicit TLS flags) for Azure Managed Redis.
+4. Refactor Redis tooling/runtime config surfaces to use the centralized abstraction while preserving current behavior.
+5. Run validation checks and update tracker evidence + Epic 7 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Kubernetes Readiness Slice)
+
+Epic/Task Reference:
+
+- EPIC 7 — Azure Readiness
+- Task 7.2 — Kubernetes Readiness
+
+1. Remove replica-local runtime dependence from baseline session state by introducing Redis-backed baseline session storage.
+2. Add Redis-backed replay run-state persistence so run status is visible across backend replicas.
+3. Add cross-replica cancellation signaling for replay runs using shared Redis run-state updates.
+4. Add a lightweight scaling-readiness check script for stateless backend + Redis-backed state behavior.
+5. Run validation checks and update tracker evidence + Epic 7 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Azure Compatibility Validation Slice)
+
+Epic/Task Reference:
+
+- EPIC 7 — Azure Readiness
+- Task 7.3 — Azure Compatibility Validation
+
+1. Add a dedicated Azure compatibility validation script that checks Redis Search, JSON, vector search, Streams, and TLS configuration requirements.
+2. Validate backend runtime compatibility signals from /api/config for Redis tool availability and TLS posture.
+3. Add runbook commands for Azure Managed Redis validation and local non-TLS smoke mode.
+4. Run validation checks for updated scripts and docs.
+5. Update tracker evidence + queue to the next Epic task.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Framework-Agnostic Context Layer Slice)
+
+Epic/Task Reference:
+
+- EPIC 8 — Microsoft Agent Framework Portability
+- Task 8.1 — Framework-Agnostic Context Layer
+
+1. Introduce a dedicated framework-agnostic context layer module that assembles Redis-backed customer context and merged operational events without LangGraph dependencies.
+2. Refactor IRIS workflow orchestration to consume the context layer output instead of embedding context assembly logic directly in workflow functions.
+3. Move Redis post-processing helpers for memory and shared-workflow state updates into the context layer so orchestration remains thin and reusable.
+4. Add runbook note documenting the new context layer boundary for future MAF reuse.
+5. Run validation checks and update tracker evidence + Epic 8 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Shared State Contracts Slice)
+
+Epic/Task Reference:
+
+- EPIC 8 — Microsoft Agent Framework Portability
+- Task 8.2 — Shared State Contracts
+
+1. Add framework-agnostic shared state contract definitions for memory records, operational events, and retrieval request/response payloads.
+2. Wire contract normalization helpers into event publishing/retrieval paths so runtime event payloads conform to one shared schema.
+3. Wire retrieval contract assembly into the context layer so context retrieval outputs are represented by a reusable API contract.
+4. Add runbook notes documenting where shared contracts live and how future orchestration frameworks should consume them.
+5. Run validation checks and update tracker evidence + Epic 8 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Migration Documentation Slice)
+
+Epic/Task Reference:
+
+- EPIC 8 — Microsoft Agent Framework Portability
+- Task 8.3 — Migration Documentation
+
+1. Create a dedicated migration documentation artifact covering LangGraph node mapping to equivalent MAF orchestration patterns.
+2. Document how framework-agnostic context layer and shared contracts are reused without refactoring Redis internals.
+3. Add a phased migration sequence with readiness gates and rollback considerations.
+4. Link migration documentation from the primary runbook for discoverability.
+5. Run validation checks and update tracker evidence + Epic 8 task notes.
+
+Execution Status:
+
+- [ ] Step 1 pending
+- [ ] Step 2 pending
+- [ ] Step 3 pending
+- [ ] Step 4 pending
+- [ ] Step 5 pending
+
 ## Working Rule
 
 This document must be updated immediately when a task is completed.
 
 ## Immediate Next-Action Queue
 
-1. Continue redis-abstraction-layer completion (EPIC 7 Task 7.1).
+1. Start migration documentation mapping (EPIC 8 Task 8.3).
 
 ## Progress Log
 
@@ -1524,6 +1650,9 @@ This document must be updated immediately when a task is completed.
 - Completed EPIC 6 Task 6.5: expanded multi-agent coordination metrics with retrieval signal, tool signal, and duplicate retrieval visibility.
 - Added shared-memory hit reporting from runtime context signals (agent memory and shared-workflow state hits) in standard and concurrent benchmark outputs.
 - Added baseline-vs-IRIS coordination comparison fields for retrieval/tool/duplicate-retrieval reduction and shared-memory-hit delta visibility.
+- Completed EPIC 7 Task 7.1: added centralized Redis client abstraction with shared env-driven configuration.
+- Added REDIS_URL + host/port/password compatibility and TLS-aware settings for local and Azure Redis connectivity.
+- Updated backend runtime config surface and Redis capability verification docs/script for Azure Managed Redis TLS workflows.
 
 ---
 
@@ -2856,6 +2985,8 @@ Prepare architecture for Azure Managed Redis and MAF.
 
 ### Task 7.1 — Redis Abstraction Layer
 
+Status: DONE (2026-05-26)
+
 Implement:
 
 - centralized Redis client
@@ -2866,9 +2997,19 @@ Acceptance Criteria:
 
 - local and Azure Redis compatible
 
+Progress Notes:
+
+- Added centralized Redis connection abstraction in backend/app/redis_client.py with a single env-driven configuration model and reusable client factory.
+- Added REDIS_URL support alongside REDIS_HOST/REDIS_PORT/REDIS_DB and optional REDIS_USERNAME/REDIS_PASSWORD inputs for compatibility across local and hosted Redis.
+- Added TLS-aware Redis configuration support (REDIS_TLS, REDIS_TLS_INSECURE, and optional cert paths), including rediss URL auto-detection for Azure Managed Redis.
+- Refactored Redis tool initialization in backend/app/redis_iris_tools.py and runtime config output in backend/app/main.py to use centralized Redis connection settings.
+- Expanded backend/scripts/verify_redis_stack.py and .env.example to support REDIS_URL and TLS validation workflows for Azure compatibility checks.
+
 ---
 
 ### Task 7.2 — Kubernetes Readiness
+
+Status: DONE (2026-05-26)
 
 Implement:
 
@@ -2880,9 +3021,19 @@ Acceptance Criteria:
 
 - multiple replicas work
 
+Progress Notes:
+
+- Added Redis-backed runtime state adapter in backend/app/runtime_state.py with TTL-based persistence for baseline session continuity and replay run-state visibility.
+- Refactored baseline runtime flow in backend/app/workflows.py to read/write customer continuity session state from Redis when available, with explicit fallback signals when Redis is unavailable.
+- Refactored replay manager in backend/app/main.py to persist run lifecycle updates to shared Redis state and expose cross-replica run visibility via GET /api/replay/runs/{run_id}.
+- Added cross-replica replay cancellation signaling by writing cancellation_requested status into shared state and honoring it during replay execution loops.
+- Added backend/scripts/check_scaling_readiness.py plus README runbook guidance to validate stateless + Redis-backed scaling behavior, including baseline continuity and replay status checks.
+
 ---
 
 ### Task 7.3 — Azure Compatibility Validation
+
+Status: DONE (2026-05-26)
 
 Validate:
 
@@ -2895,6 +3046,14 @@ Validate:
 Acceptance Criteria:
 
 - architecture deployable to AMR
+
+Progress Notes:
+
+- Added backend/scripts/validate_azure_compatibility.py to validate Redis capability coverage (RediSearch, RedisJSON, vector search, Streams) and TLS posture for Azure readiness.
+- Added backend runtime compatibility verification in the same script against GET /api/config for redis_tools_enabled and redis_tls signaling.
+- Added Azure Managed Redis validation runbook commands and local non-TLS smoke-mode instructions in README.md.
+- Reused centralized Redis connection inputs (URL/host/port/credentials/TLS cert settings) so validation aligns with deployment runtime configuration.
+- Completed syntax/diagnostic validation for updated task artifacts and recorded queue progression to EPIC 8 Task 8.1.
 
 ---
 
@@ -2910,6 +3069,8 @@ Prepare future MAF migration.
 
 ### Task 8.1 — Framework-Agnostic Context Layer
 
+Status: DONE (2026-05-26)
+
 Ensure:
 
 - Redis layer independent of LangGraph
@@ -2919,9 +3080,19 @@ Acceptance Criteria:
 
 - Redis APIs reusable in MAF
 
+Progress Notes:
+
+- Added backend/app/context_layer.py as a framework-agnostic context packet module that assembles Redis-backed seed/context and merged operational events without LangGraph dependencies.
+- Refactored IRIS orchestration in backend/app/workflows.py to consume context packets from the context layer rather than embedding Redis context assembly in workflow logic.
+- Moved Redis post-processing behavior (agent-memory writes, extracted long-term facts, shared workflow-state updates, cache-store signaling) into context-layer helpers.
+- Added README architecture boundary notes describing how context_layer.py is reusable for future MAF orchestration.
+- Completed compile/diagnostic validation for the refactor and advanced queue to EPIC 8 Task 8.2.
+
 ---
 
 ### Task 8.2 — Shared State Contracts
+
+Status: DONE (2026-05-26)
 
 Define:
 
@@ -2932,6 +3103,14 @@ Define:
 Acceptance Criteria:
 
 - contracts framework-agnostic
+
+Progress Notes:
+
+- Added backend/app/state_contracts.py with framework-agnostic contracts for memory records, event records, and retrieval request/response payloads.
+- Added contract normalization helpers for event payloads and memory records, plus retrieval contract assembly helpers decoupled from orchestration framework concerns.
+- Wired backend/app/main.py event publish/read paths to normalize payloads using the shared event contract before stream writes and event-bus fanout.
+- Wired backend/app/context_layer.py to emit retrieval API contract summaries alongside context packets and context signals.
+- Added README contract boundary documentation and advanced queue to EPIC 8 Task 8.3 after compile/diagnostic validation.
 
 ---
 

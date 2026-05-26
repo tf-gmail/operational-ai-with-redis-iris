@@ -45,6 +45,44 @@ docker-compose exec -T backend python scripts/verify_redis_stack.py --host redis
 
 If Docker commands fail, make sure the Docker daemon (or Colima runtime) is started.
 
+For Azure Managed Redis TLS validation, you can use a secure URL directly:
+
+python backend/scripts/verify_redis_stack.py --url rediss://<host>:6380 --username <username> --password <password>
+
+Optional TLS env vars supported by backend and verification script:
+
+- REDIS_URL (preferred for hosted Redis)
+- REDIS_HOST / REDIS_PORT / REDIS_DB
+- REDIS_USERNAME / REDIS_PASSWORD
+- REDIS_TLS / REDIS_TLS_INSECURE
+- REDIS_TLS_CA_CERT / REDIS_TLS_CLIENT_CERT / REDIS_TLS_CLIENT_KEY
+
+Runtime state TTL env vars for stateless backend scaling:
+
+- BASELINE_STATE_TTL_SECONDS (default: 86400)
+- REPLAY_STATE_TTL_SECONDS (default: 14400)
+
+## Kubernetes Readiness Check
+
+Run a shared-state readiness check against a running backend:
+
+python3 backend/scripts/check_scaling_readiness.py --base-url http://localhost:8000
+
+Optional local multi-replica smoke test:
+
+docker compose up -d --scale backend=2
+python3 backend/scripts/check_scaling_readiness.py --base-url http://localhost:8000
+
+## Azure Compatibility Validation (EPIC 7 Task 7.3)
+
+Validate Redis module coverage and backend runtime compatibility for Azure Managed Redis:
+
+python3 backend/scripts/validate_azure_compatibility.py --base-url http://localhost:8000 --url rediss://<host>:6380 --username <username> --password <password>
+
+Local non-TLS smoke mode (for local Redis Stack only):
+
+python3 backend/scripts/validate_azure_compatibility.py --base-url http://localhost:8000 --host localhost --port 6379 --allow-non-tls
+
 ## Benchmark Harness (v1)
 
 Run baseline vs IRIS endpoint benchmark and save report:
@@ -68,6 +106,18 @@ The backend now wires all four Redis IRIS tools in the IRIS run path:
 
 IRIS also includes a vector-based similar-incident retrieval path built on Redis vector search indexes
 using deterministic local pseudo-embeddings for incident summaries.
+
+Framework-agnostic context layer boundary:
+
+- backend/app/context_layer.py contains Redis-backed context packet assembly and Redis post-processing helpers.
+- Orchestration code in backend/app/workflows.py consumes context packets and remains decoupled from Redis retrieval internals.
+- This separation is designed for EPIC 8 MAF portability so the same Redis context layer can be reused outside LangGraph.
+
+Shared state contract boundary:
+
+- backend/app/state_contracts.py defines framework-agnostic contracts for memory records, event records, and retrieval request/response payloads.
+- Event publish/read paths in backend/app/main.py normalize runtime events through the shared event contract.
+- Context retrieval in backend/app/context_layer.py emits a retrieval API contract summary for orchestration-independent consumers.
 
 RDI control endpoints:
 

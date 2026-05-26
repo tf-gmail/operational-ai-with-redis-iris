@@ -9,11 +9,56 @@ from redis import Redis
 from redis.exceptions import ResponseError
 
 
+TRUE_VALUES = {"1", "true", "yes", "on"}
+
+
+def env_bool(name: str, default: bool = False) -> bool:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() in TRUE_VALUES
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Verify Redis Stack capabilities")
+    parser.add_argument("--url", default=os.getenv("REDIS_URL", ""))
     parser.add_argument("--host", default=os.getenv("REDIS_HOST", "localhost"))
     parser.add_argument("--port", type=int, default=int(os.getenv("REDIS_PORT", "6379")))
+    parser.add_argument("--db", type=int, default=int(os.getenv("REDIS_DB", "0")))
+    parser.add_argument("--username", default=os.getenv("REDIS_USERNAME"))
+    parser.add_argument("--password", default=os.getenv("REDIS_PASSWORD"))
+    parser.add_argument("--tls", action="store_true", default=env_bool("REDIS_TLS", False))
+    parser.add_argument("--tls-insecure", action="store_true", default=env_bool("REDIS_TLS_INSECURE", False))
+    parser.add_argument("--tls-ca-cert", default=os.getenv("REDIS_TLS_CA_CERT"))
+    parser.add_argument("--tls-client-cert", default=os.getenv("REDIS_TLS_CLIENT_CERT"))
+    parser.add_argument("--tls-client-key", default=os.getenv("REDIS_TLS_CLIENT_KEY"))
     return parser.parse_args()
+
+
+def build_client(args: argparse.Namespace) -> Redis:
+    tls_enabled = args.tls or args.url.strip().lower().startswith("rediss://")
+    kwargs: dict[str, object] = {
+        "decode_responses": False,
+        "db": args.db,
+    }
+    if args.username:
+        kwargs["username"] = args.username
+    if args.password:
+        kwargs["password"] = args.password
+
+    if tls_enabled:
+        kwargs["ssl"] = True
+        kwargs["ssl_cert_reqs"] = "none" if args.tls_insecure else "required"
+        if args.tls_ca_cert:
+            kwargs["ssl_ca_certs"] = args.tls_ca_cert
+        if args.tls_client_cert:
+            kwargs["ssl_certfile"] = args.tls_client_cert
+        if args.tls_client_key:
+            kwargs["ssl_keyfile"] = args.tls_client_key
+
+    if args.url:
+        return Redis.from_url(args.url, **kwargs)
+    return Redis(host=args.host, port=args.port, **kwargs)
 
 
 def print_result(name: str, ok: bool, details: str) -> None:
@@ -164,7 +209,7 @@ def check_streams(client: Redis) -> tuple[bool, str]:
 
 def main() -> int:
     args = parse_args()
-    client = Redis(host=args.host, port=args.port, decode_responses=False)
+    client = build_client(args)
 
     checks = [
         ("Connectivity", lambda c: (bool(c.ping()), "ping ok")),
