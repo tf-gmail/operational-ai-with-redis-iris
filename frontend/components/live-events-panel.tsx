@@ -66,6 +66,7 @@ export default function LiveEventsPanel({ apiBase }: Props) {
   const [activeStepIndex, setActiveStepIndex] = useState(-1);
   const [activeRunState, setActiveRunState] = useState<ReplayRunState | null>(null);
   const [replayStatus, setReplayStatus] = useState<string>("idle");
+  const [replaySpeed, setReplaySpeed] = useState<number>(10);
   const pollTimerRef = useRef<number | null>(null);
 
   const selectedTemplate = useMemo(
@@ -309,7 +310,7 @@ export default function LiveEventsPanel({ apiBase }: Props) {
         body: JSON.stringify({
           template_id: selectedTemplate.id,
           mode: "full",
-          speed_multiplier: 10
+          speed_multiplier: replaySpeed
         })
       });
       if (!response.ok) {
@@ -360,6 +361,9 @@ export default function LiveEventsPanel({ apiBase }: Props) {
   };
 
   const runInProgress = activeRunId !== null;
+  const totalSteps = selectedTemplate?.steps.length ?? 0;
+  const completedSteps = Math.max(activeStepIndex + 1, 0);
+  const progressPercent = totalSteps > 0 ? Math.min(100, Math.max(0, (completedSteps / totalSteps) * 100)) : 0;
 
   return (
     <section className="card">
@@ -391,6 +395,26 @@ export default function LiveEventsPanel({ apiBase }: Props) {
         </p>
         <p className="eventMeta">Replay status: {replayStatus}</p>
         <p className="eventMeta">Active run: {activeRunState?.run_id ?? "none"}</p>
+        <label className="replayLabel" htmlFor="speed-select">
+          Playback Speed
+        </label>
+        <select
+          id="speed-select"
+          className="replaySelect"
+          value={String(replaySpeed)}
+          onChange={(event) => setReplaySpeed(Number(event.target.value))}
+          disabled={runInProgress}
+        >
+          <option value="0.5">0.5x</option>
+          <option value="1">1x</option>
+          <option value="2">2x</option>
+          <option value="5">5x</option>
+          <option value="10">10x</option>
+        </select>
+        <p className="eventMeta">Completed steps: {completedSteps}/{totalSteps || 0}</p>
+        <div className="replayProgress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progressPercent)}>
+          <div className="replayProgressFill" style={{ width: `${progressPercent.toFixed(1)}%` }} />
+        </div>
         <div className="replayButtons">
           <button
             className="injectButton"
@@ -444,7 +468,7 @@ export default function LiveEventsPanel({ apiBase }: Props) {
             </p>
             <p>{event.message ?? "No message"}</p>
             <p className="eventMeta">
-              {(event.customer ?? "unknown customer") + " | " + (event.timestamp ?? "no timestamp")}
+              {(event.customer ?? "unknown customer") + " | " + (event.timestamp ?? "no timestamp") + " | source=" + (event.source ?? "unknown")}
             </p>
           </article>
         ))}

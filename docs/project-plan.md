@@ -546,17 +546,769 @@ Execution Status:
 - [x] Step 4 complete
 - [x] Step 5 complete
 
+## Current Execution Plan (Learning Mode MAF Portability Mapping Slice)
+
+Epic/Task Reference:
+
+- EPIC 9 — Learning Mode and Interactive Architecture Explorer
+- Task 9.9 — MAF Portability Mapping Panel
+
+1. Add backend learning payload and endpoint for MAF portability mapping.
+2. Wire Learning Mode page to load the MAF portability payload.
+3. Add portability mapping panel with current-component to MAF-equivalent table.
+4. Add migration sequence section for presenter guidance.
+5. Run validation checks and update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Learning Mode Presenter Auto-Tour Slice)
+
+Epic/Task Reference:
+
+- EPIC 9 — Learning Mode and Interactive Architecture Explorer
+- Task 9.10 — Presenter Auto-Tour Mode
+
+1. Add timed auto-tour controls to the Guided Demo overlay for presenter-led playback.
+2. Implement interval-driven guided-step progression with safe stop behavior at the final step.
+3. Keep auto-tour synchronized with mode, flow step focus, and component selection highlights.
+4. Add UI metadata for tour speed and active/inactive tour state visibility.
+5. Run validation checks and update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Learning Mode Context Diff Narrative Slice)
+
+Epic/Task Reference:
+
+- EPIC 9 — Learning Mode and Interactive Architecture Explorer
+- Task 9.11 — Baseline-vs-IRIS Context Diff Narrative
+
+1. Add backend learning payload for baseline-vs-IRIS context packet comparison.
+2. Add backend endpoint for context diff narrative retrieval in Learning Mode.
+3. Wire Learning Mode page to load context diff payload alongside existing learning datasets.
+4. Add side-by-side context narrative panel showing what changes from baseline to IRIS.
+5. Run validation checks and update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Learning Mode Metrics Storytelling Slice)
+
+Epic/Task Reference:
+
+- EPIC 9 — Learning Mode and Interactive Architecture Explorer
+- Enhancement — Narrated Metrics Storytelling Mode for Executive Demo Pacing
+
+1. Add backend learning payload for narrated metrics storytelling chapters and pacing hints.
+2. Add backend endpoint for metrics storytelling payload retrieval in Learning Mode.
+3. Add frontend narrated storytelling playback controls (play, pause, next, previous, reset).
+4. Add a storytelling panel with chapter narrative, KPI focus, and executive talk-track guidance.
+5. Run validation checks and update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Learning Mode Audience Q and A Slice)
+
+Epic/Task Reference:
+
+- EPIC 9 — Learning Mode and Interactive Architecture Explorer
+- Enhancement — Audience Q and A Mode with Pre-Mapped Architecture Answers
+
+1. Add backend learning payload for curated audience questions and mapped architecture answers.
+2. Add backend endpoint for Learning Mode Q and A payload retrieval.
+3. Add frontend Q and A interaction component with selectable questions and quick category context.
+4. Add Learning Mode panel that presents pre-mapped answers tied to architecture components.
+5. Run validation checks and update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Learning Mode Exportable Summary Handout Slice)
+
+Epic/Task Reference:
+
+- EPIC 9 — Learning Mode and Interactive Architecture Explorer
+- Enhancement — Exportable Learning Summary Handout for Stakeholder Follow-up
+
+1. Add backend learning payload for a concise stakeholder handout summary.
+2. Add backend endpoint for Learning Mode handout payload retrieval.
+3. Add frontend handout panel that renders summary sections and key proof points.
+4. Add export action to download the handout as JSON for follow-up sharing.
+5. Run validation checks and update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Learning Mode Presenter Annotation Slice)
+
+Epic/Task Reference:
+
+- EPIC 9 — Learning Mode and Interactive Architecture Explorer
+- Enhancement — Presenter Annotation Mode for Technical vs Executive Talk Tracks
+
+1. Add backend learning payload for presenter annotations with technical and executive track variants.
+2. Add backend endpoint for Learning Mode presenter annotation payload retrieval.
+3. Add frontend presenter annotation panel with track toggle and section-level talk tracks.
+4. Integrate presenter annotation mode into Learning Mode and preserve responsive behavior.
+5. Run validation checks and update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Learning Mode Guided Fallback Script Cards Slice)
+
+Epic/Task Reference:
+
+- EPIC 9 — Learning Mode and Interactive Architecture Explorer
+- Enhancement — Guided Fallback Script Cards for Offline/No-Live-Event Demos
+
+1. Add backend learning payload for fallback script cards covering common demo interruption scenarios.
+2. Add backend endpoint for Learning Mode fallback script card retrieval.
+3. Add frontend fallback script cards panel with quick scenario selection and narrator-ready script text.
+4. Integrate fallback script cards panel into Learning Mode with responsive layout parity.
+5. Run validation checks and update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Learning Mode Architecture Quiz Checkpoints Slice)
+
+Epic/Task Reference:
+
+- EPIC 9 — Learning Mode and Interactive Architecture Explorer
+- Enhancement — Architecture Quiz Checkpoints for Audience Engagement Between Demo Chapters
+
+1. Add backend learning payload for chapter-aligned architecture quiz checkpoints with answer explanations.
+2. Add backend endpoint for Learning Mode quiz checkpoint payload retrieval.
+3. Add frontend quiz checkpoint component with question navigation, answer selection, and reveal flow.
+4. Integrate quiz checkpoint panel into Learning Mode with responsive layout parity.
+5. Run validation checks and update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Learning Mode Live Q and A Answer Anchors Slice)
+
+Epic/Task Reference:
+
+- EPIC 9 — Learning Mode and Interactive Architecture Explorer
+- Task 9.12 — Live Q and A Answer Anchors
+
+1. Add backend learning payload for chapter-aware Q and A anchor links and presenter guidance.
+2. Add backend endpoint for Learning Mode Q and A anchor payload retrieval.
+3. Add frontend anchor panel that lists quick-jump answers mapped to Learning Mode sections.
+4. Integrate anchor panel and section IDs into Learning Mode with responsive layout parity.
+5. Run validation checks and update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Frontend Framework Hardening Slice)
+
+Epic/Task Reference:
+
+- EPIC 1 — Project Foundation
+- Task 1.4 — Setup Frontend Framework
+
+1. Add TailwindCSS foundation dependencies and configuration files in frontend.
+2. Wire Tailwind layers into global styling while preserving existing visual language.
+3. Add a lightweight theme toggle to support dark-mode and light-mode switching.
+4. Integrate theme controls into dashboard shell without breaking Learning Mode layout behavior.
+5. Run validation checks and update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Frontend shadcn Starter Components Slice)
+
+Epic/Task Reference:
+
+- EPIC 1 — Project Foundation
+- Task 1.4 — Setup Frontend Framework
+
+1. Add baseline utility dependencies required for shadcn/ui-style component composition.
+2. Add shared frontend utility helper for className composition.
+3. Add starter shadcn-style UI primitives (button and card) in the frontend component library.
+4. Integrate starter UI primitives into the home dashboard shell without changing runtime behavior.
+5. Run validation checks and update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Stakeholder Generator Communication Patterns Slice)
+
+Epic/Task Reference:
+
+- EPIC 2 — Synthetic Enterprise Data Engine
+- Task 2.2 — Stakeholder Generator
+
+1. Extend stakeholder generator schema with communication-pattern fields and deterministic sentiment dynamics.
+2. Update deterministic Acme stakeholders to include the same communication-pattern fields.
+3. Regenerate the seeded dataset artifact with updated stakeholder schema.
+4. Validate generator runtime and output shape for stakeholder-linked communication fields.
+5. Update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Support Ticket Relationship Modeling Slice)
+
+Epic/Task Reference:
+
+- EPIC 2 — Synthetic Enterprise Data Engine
+- Task 2.3 — Support Ticket Generator
+
+1. Extend synthetic support-ticket records with deterministic relationship fields (origin, parent/escalation link, and incident linkage).
+2. Wire generator flow so tickets can reference same-customer incidents for realistic escalation paths.
+3. Update deterministic Acme ticket records to include the same relationship schema.
+4. Regenerate seeded dataset and validate ticket relationship fields and generator metadata.
+5. Update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Usage Trend and Anomaly Modeling Slice)
+
+Epic/Task Reference:
+
+- EPIC 2 — Synthetic Enterprise Data Engine
+- Task 2.5 — Usage Generator
+
+1. Extend customer generator output with deterministic usage/adoption snapshot fields.
+2. Add monthly usage trend history with declining-growth patterns and anomaly flags.
+3. Update deterministic Acme customer seed record with usage and anomaly fields.
+4. Regenerate seeded dataset and validate usage/anomaly fields and generator metadata.
+5. Update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Customer Memory Continuity Modeling Slice)
+
+Epic/Task Reference:
+
+- EPIC 2 — Synthetic Enterprise Data Engine
+- Task 2.6 — Memory Generator
+
+1. Extend customer generator output with deterministic memory-continuity fields for prior escalations, promises, frustrations, and communication preferences.
+2. Add historical memory timeline entries that can seed continuity scenarios across sessions.
+3. Update deterministic Acme customer seed record with memory continuity fields and history.
+4. Regenerate seeded dataset and validate memory fields and generator metadata.
+5. Update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Event Stream Expansion and Replay Fidelity Slice)
+
+Epic/Task Reference:
+
+- EPIC 2 — Synthetic Enterprise Data Engine
+- Task 2.7 — Event Stream Generator
+
+1. Expand generated event stream payloads beyond ticket/incident status updates.
+2. Add deterministic support events, customer messages, and deployment events in replayable format.
+3. Keep stream ordering deterministic and customer-linked for timeline playback.
+4. Regenerate seeded dataset and validate event type coverage and generator metadata.
+5. Update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Incident Impact and Deployment-Failure Modeling Slice)
+
+Epic/Task Reference:
+
+- EPIC 2 — Synthetic Enterprise Data Engine
+- Task 2.4 — Incident Generator
+
+1. Extend incident generator schema with deterministic customer-impact and deployment-failure context fields.
+2. Keep incident timelines deterministic while enriching records with impact-oriented metadata.
+3. Update deterministic Acme incident seed record to include the same schema additions.
+4. Regenerate seeded dataset and validate incident impact fields and generator metadata.
+5. Update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Customer Profile and Contract Distribution Hardening Slice)
+
+Epic/Task Reference:
+
+- EPIC 2 — Synthetic Enterprise Data Engine
+- Task 2.1 — Customer Generator
+
+1. Extend customer generator schema with deterministic profile dimensions (industry, region, and account tier).
+2. Add deterministic contract metadata for each customer to strengthen operational realism.
+3. Update deterministic Acme seed customer to include the same profile and contract schema.
+4. Regenerate seeded dataset and validate customer profile and contract field coverage with generator metadata.
+5. Update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Baseline Local Memory and Session Continuity Slice)
+
+Epic/Task Reference:
+
+- EPIC 3 — Baseline LangGraph System
+- Task 3.2 — Local Memory
+
+1. Add naive in-process local memory store for baseline sessions keyed by customer.
+2. Pass chat-history snippets and baseline session state into baseline graph execution.
+3. Surface local-memory continuity signals in baseline responses while keeping scope session-local only.
+4. Run validation checks with repeated baseline calls to confirm in-session memory behavior.
+5. Update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Baseline Retrieval Layer Hardening Slice)
+
+Epic/Task Reference:
+
+- EPIC 3 — Baseline LangGraph System
+- Task 3.3 — Baseline Retrieval Layer
+
+1. Add baseline local JSON retrieval over seed entities for customer, ticket, incident, and stakeholder context.
+2. Add simple keyword retrieval path that scores seed snippets against the active prompt.
+3. Add deterministic fake vector retrieval path for pseudo-semantic matching without external embeddings.
+4. Wire retrieval outputs into baseline graph summary and context signals while preserving intentionally inefficient behavior.
+5. Run validation checks and update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Baseline Runtime Metrics Instrumentation Slice)
+
+Epic/Task Reference:
+
+- EPIC 3 — Baseline LangGraph System
+- Task 3.4 — Metrics Instrumentation
+
+1. Add runtime latency instrumentation around baseline and IRIS workflow execution paths.
+2. Add deterministic derived token and retrieval/tool metric enrichments from runtime payloads.
+3. Include explicit instrumentation signals so downstream UI and benchmark consumers can distinguish modeled vs observed metrics.
+4. Validate metrics payload shape via repeated workflow calls for both baseline and IRIS paths.
+5. Update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (RedisJSON Operational Entity Hardening Slice)
+
+Epic/Task Reference:
+
+- EPIC 4 — Redis IRIS Integration
+- Task 4.1 — RedisJSON Operational State
+
+1. Extend RDI sync to persist contract and usage entities as first-class RedisJSON documents linked to customers.
+2. Extend RDI sync status reporting with contract/usage sync counters for observability.
+3. Extend context retrieval and merge paths to include RedisJSON contract/usage payloads in operational context.
+4. Run validation checks for compile integrity and RedisJSON sync/report payload shape.
+5. Update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (FT.SEARCH Query Filtering and Timeline Context Slice)
+
+Epic/Task Reference:
+
+- EPIC 4 — Redis IRIS Integration
+- Task 4.2 — Redis Search
+
+1. Extend Redis FT.SEARCH retrieval to support query-driven filters for severity, status, and service hints.
+2. Add deterministic retrieval-hint parsing from user query text and expose retrieval filter usage in context metadata.
+3. Add timeline-oriented operational context assembly from ticket and incident records.
+4. Validate compile integrity and retrieval-hint behavior with focused checks.
+5. Update tracker evidence + Epic task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Redis Agent Memory Extraction and Recall Hardening Slice)
+
+Epic/Task Reference:
+
+- EPIC 4 — Redis IRIS Integration
+- Task 4.4 — Redis Agent Memory
+
+1. Add deterministic memory extraction for reusable customer-preference and commitment facts.
+2. Extend Redis memory storage to separate short-term turn memory from durable long-term memory.
+3. Add query-aware memory retrieval scoring so relevant memory is prioritized in shared context.
+4. Wire IRIS post-processing to write extracted memory facts and add memory-layer runtime signals.
+5. Run validation checks and update tracker evidence + Epic 4 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Shared Workflow State and Context Continuity Slice)
+
+Epic/Task Reference:
+
+- EPIC 4 — Redis IRIS Integration
+- Task 4.5 — Shared Operational Context
+
+1. Extend Redis shared context payload to include persisted shared workflow state per customer.
+2. Add Redis helpers to read/write shared workflow state with deterministic bounded payload fields.
+3. Merge shared workflow state into IRIS seed/context so follow-up turns reuse consistent state.
+4. Wire IRIS post-processing to persist latest shared workflow state and emit shared-state runtime signals.
+5. Run validation checks and update tracker evidence + Epic 4 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Redis Streams Reactivity Hardening Continuation Slice)
+
+Epic/Task Reference:
+
+- EPIC 4 — Redis IRIS Integration
+- Task 4.6 — Redis Streams
+
+1. Add Redis stream-read helpers to retrieve recent operational events for a customer or global context.
+2. Merge persisted Redis stream events with in-memory event-bus snapshots for IRIS runtime context.
+3. Ensure event ordering favors most-recent events so IRIS event context is deterministic after restarts.
+4. Emit explicit runtime signals for stream-event context availability and event counts.
+5. Run validation checks and update tracker evidence + Epic 4 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Semantic Cache Similarity and Hit-Signal Hardening Slice)
+
+Epic/Task Reference:
+
+- EPIC 4 — Redis IRIS Integration
+- Task 4.7 — Semantic Cache
+
+1. Extend Redis cache retrieval to support similarity-based cache lookup fallback for near-duplicate prompts.
+2. Add bounded per-customer cache-key index maintenance to keep semantic lookup deterministic and efficient.
+3. Preserve exact-cache behavior while returning semantic cache hits with explicit runtime traceability.
+4. Add semantic cache hit signaling in IRIS runtime path for visibility in metrics and UI context signals.
+5. Run validation checks and update tracker evidence + Epic 4 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Runtime Metrics Visualization Continuation Slice)
+
+Epic/Task Reference:
+
+- EPIC 5 — Modern UI and UX
+- Task 5.3 — Metrics Visualization
+
+1. Add a dedicated runtime metrics panel component for baseline vs IRIS request metrics.
+2. Visualize key runtime dimensions (latency, prompt tokens, memory hits, cache hits) side-by-side.
+3. Add compact comparative charts for retrieval and tool signal intensity for immediate before/after reading.
+4. Integrate the new metrics panel into the main dashboard layout with responsive behavior.
+5. Run validation checks and update tracker evidence + Epic 5 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Before-vs-After Toggle Implementation Slice)
+
+Epic/Task Reference:
+
+- EPIC 5 — Modern UI and UX
+- Task 5.4 — Before vs After Toggle
+
+1. Add a dashboard-level before/after mode toggle component with Baseline, IRIS, and side-by-side comparison modes.
+2. Reuse the same workflow outputs for both modes so baseline and IRIS remain directly comparable per request.
+3. Surface measurable differences (latency, tokens, retrieval/tool calls) as explicit delta indicators.
+4. Integrate the toggle panel into the main dashboard flow with responsive layout behavior.
+5. Run validation checks and update tracker evidence + Epic 5 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Replay Events UI Completion Slice)
+
+Epic/Task Reference:
+
+- EPIC 5 — Modern UI and UX
+- Task 5.5 — Replay Events UI
+
+1. Add replay-speed control in the frontend panel and pass selected speed to backend replay execution.
+2. Add replay-run progress visualization so playback advancement is visible immediately.
+3. Improve replay status metadata display for active run state and step completion.
+4. Keep step replay compatibility and responsive layout behavior after UI enhancements.
+5. Run validation checks and update tracker evidence + Epic 5 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Benchmark Harness Scenario Matrix Slice)
+
+Epic/Task Reference:
+
+- EPIC 6 — Benchmarking and Proof
+- Task 6.1 — Benchmark Harness
+
+1. Add scenario-profile support in the benchmark harness for baseline smoke and expanded workload modes.
+2. Add deterministic scenario matrix coverage for repeated-query and memory-heavy workflow prompts.
+3. Preserve existing top-level benchmark metric fields while appending per-scenario breakdown output.
+4. Wire extended CI benchmark run to use the expanded scenario profile for wider benchmark evidence.
+5. Run validation checks and update tracker evidence + Epic 6 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Token Measurement Metrics Expansion Slice)
+
+Epic/Task Reference:
+
+- EPIC 6 — Benchmarking and Proof
+- Task 6.2 — Token Measurement
+
+1. Extend benchmark harness token extraction to capture prompt, completion, and total token values from runtime metrics.
+2. Preserve existing prompt-token output fields while appending completion-token and total-token averages for compatibility-safe expansion.
+3. Extend scenario breakdown and concurrent benchmark outputs to include the same token triplet.
+4. Run validation checks for benchmark scripts and CLI output shape.
+5. Update tracker evidence + Epic 6 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Latency Measurement Depth Expansion Slice)
+
+Epic/Task Reference:
+
+- EPIC 6 — Benchmarking and Proof
+- Task 6.3 — Latency Measurement
+
+1. Extend runtime metrics to expose deterministic latency decomposition fields for retrieval and LLM phases.
+2. Extend benchmark harness outputs with latency p50 and runtime-latency summaries in addition to existing p95 fields.
+3. Extend benchmark outputs with retrieval-latency and llm-latency averages derived from runtime metrics.
+4. Preserve existing latency fields used by regression checks while appending the new latency metrics.
+5. Run validation checks and update tracker evidence + Epic 6 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Cache Effectiveness Proof Slice)
+
+Epic/Task Reference:
+
+- EPIC 6 — Benchmarking and Proof
+- Task 6.4 — Cache Effectiveness
+
+1. Extend benchmark harness response parsing to capture cache-hit signals (exact and semantic) from runtime context signals.
+2. Add top-level cache hit rate metrics for baseline and IRIS benchmark outputs.
+3. Add repeated-query runtime-latency savings metrics so cache value is visible over repeated prompts.
+4. Preserve existing benchmark metric fields used by regression scripts while appending cache-effectiveness fields.
+5. Run validation checks and update tracker evidence + Epic 6 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
+## Current Execution Plan (Multi-Agent Coordination Metrics Slice)
+
+Epic/Task Reference:
+
+- EPIC 6 — Benchmarking and Proof
+- Task 6.5 — Multi-Agent Coordination Metrics
+
+1. Extend benchmark metric parsing to capture retrieval and tool signal counts from runtime metrics.
+2. Add duplicate-retrieval and shared-memory-hit summaries derived from runtime signals.
+3. Add baseline-vs-IRIS coordination comparison metrics for retrieval/tool reduction visibility.
+4. Preserve existing benchmark metric fields used by trend/regression consumers while appending coordination metrics.
+5. Run validation checks and update tracker evidence + Epic 6 task notes.
+
+Execution Status:
+
+- [x] Step 1 complete
+- [x] Step 2 complete
+- [x] Step 3 complete
+- [x] Step 4 complete
+- [x] Step 5 complete
+
 ## Working Rule
 
 This document must be updated immediately when a task is completed.
 
 ## Immediate Next-Action Queue
 
-1. Add MAF portability mapping panel in Learning Mode (EPIC 9 future-scope).
-2. Add presenter auto-tour mode with timed highlights (EPIC 9 future-scope).
-3. Add side-by-side context packet diff view between baseline and IRIS (EPIC 9 enhancement).
-4. Add narrated metrics storytelling mode for executive demo pacing (EPIC 9 enhancement).
-5. Add audience Q and A mode with pre-mapped architecture answers (EPIC 9 enhancement).
+1. Continue redis-abstraction-layer completion (EPIC 7 Task 7.1).
 
 ## Progress Log
 
@@ -593,6 +1345,21 @@ This document must be updated immediately when a task is completed.
 - Verified updated runtime responses and Python syntax checks for main workflow and benchmark files.
 - Upgraded CI workflow from placeholder to container-based smoke verification for backend + redis.
 - Added deterministic customer generator script at data/generate_customers.py.
+- Completed EPIC 9 enhancement: guided fallback script cards for offline/no-live-event demos.
+- Added backend endpoint GET /api/learning/fallback-scripts and integrated Learning Mode fallback panel UI.
+- Validated fallback scripts endpoint with FastAPI TestClient and confirmed frontend build success after integration.
+- Completed EPIC 9 enhancement: architecture quiz checkpoints for audience engagement between demo chapters.
+- Added backend endpoint GET /api/learning/quiz-checkpoints and integrated Learning Mode quiz checkpoint panel UI.
+- Validated quiz checkpoint endpoint with FastAPI TestClient and confirmed frontend build success after integration.
+- Completed EPIC 9 Task 9.12: live Q and A answer anchors for rapid presenter navigation.
+- Added backend endpoint GET /api/learning/qa-anchors and integrated Learning Mode anchor jump panel UI.
+- Validated Q and A anchors endpoint with FastAPI TestClient and confirmed frontend build success after integration.
+- Completed EPIC 1 Task 1.4 slice: Tailwind foundation and theme toggle integration in frontend.
+- Added Tailwind/PostCSS config files and theme toggle control in home dashboard shell.
+- Validated frontend build success after Tailwind plugin compatibility fix and framework hardening changes.
+- Completed EPIC 1 Task 1.4 continuation: shadcn/ui starter components and baseline usage integration.
+- Added shared className utility helper and shadcn-style button/card primitives in frontend component library.
+- Validated frontend build success after shadcn starter component integration.
 - Generated multi-customer fixture at data/customers_seed.json (1000 customers).
 - Added backend graph-style node pipeline module at backend/app/graph_pipeline.py.
 - Wired backend workflows to graph-style pipeline execution for baseline and IRIS modes.
@@ -663,6 +1430,100 @@ This document must be updated immediately when a task is completed.
 - Added optional guided demo overlay controls to Learning Mode architecture toolbar for presenter-led walkthroughs.
 - Added six scripted guided steps aligned to Task 9.8 acceptance narrative and linked them to mode/step focus behavior.
 - Validated frontend build after Task 9.8 guided overlay integration.
+- Added backend endpoint GET /api/learning/maf-portability and teaching payload for framework portability mapping.
+- Added Learning Mode MAF portability panel with component mapping table and staged migration sequence.
+- Validated backend endpoint checks and frontend build after Task 9.9 portability integration.
+- Added Learning Mode presenter auto-tour controls with timed guided-step progression and automatic stop at final guided step.
+- Added auto-tour status and speed metadata in Guided Demo overlay for presenter pacing visibility.
+- Validated frontend build after Task 9.10 presenter auto-tour integration.
+- Added backend context diff teaching payload and endpoint GET /api/learning/context-diff for baseline-versus-IRIS packet comparison.
+- Added Learning Mode side-by-side context diff narrative panel with delta storytelling for prompt shape, retrieval path, and memory continuity.
+- Validated backend endpoint checks and frontend build after Task 9.11 context diff integration.
+- Added backend endpoint GET /api/learning/metrics-storytelling with narrated chapter payload and pacing hints.
+- Added Learning Mode narrated metrics storytelling panel with play, pause, next, previous, and reset controls for executive pacing.
+- Validated backend endpoint checks and frontend build after metrics storytelling enhancement integration.
+- Added backend endpoint GET /api/learning/audience-qa with curated audience questions and pre-mapped architecture answers.
+- Added Learning Mode Audience Q and A panel with category filtering, question selection, and mapped component chips.
+- Validated backend endpoint checks and frontend build after audience Q and A enhancement integration.
+- Added backend endpoint GET /api/learning/summary-handout with stakeholder-facing summary sections, proof points, and export metadata.
+- Added Learning Mode exportable summary handout panel with section rendering and JSON download action for follow-up sharing.
+- Validated backend endpoint checks and frontend build after exportable handout enhancement integration.
+- Added backend endpoint GET /api/learning/presenter-annotations with executive and technical presenter track payloads.
+- Added Learning Mode presenter annotation panel with track toggle and topic-level speaking prompts.
+- Validated backend endpoint checks and frontend build after presenter annotation enhancement integration.
+- Completed EPIC 2 Task 2.2: enriched stakeholder generator with deterministic communication patterns and sentiment dynamics.
+- Added stakeholder communication fields in generated data: preferred_channel, update_cadence, communication_style, timezone, and response_sla_hours.
+- Regenerated data/customers_seed.json and validated generator metadata version 3 with communication fields present in stakeholder records.
+- Completed EPIC 2 Task 2.3: enriched support ticket generator with deterministic relationship modeling and incident-linked escalation paths.
+- Added ticket relationship fields in generated data: origin, related_incident_id, and escalates_ticket_id.
+- Regenerated data/customers_seed.json and validated generator metadata version 4 with ticket relationship fields present and populated.
+- Completed EPIC 2 Task 2.5: enriched customer usage generator with deterministic adoption trends and anomaly modeling.
+- Added usage fields in generated customer data: seats_provisioned, active_seats, adoption_rate_pct, monthly_active_trend, and anomalies.
+- Regenerated data/customers_seed.json and validated generator metadata version 5 with usage trend and anomaly fields present.
+- Completed EPIC 2 Task 2.6: enriched customer memory generator with deterministic continuity fields and historical memory events.
+- Added memory fields in generated customer data: escalation_count, open_commitment, promise, frustration, preference, and memory_timeline.
+- Regenerated data/customers_seed.json and validated generator metadata version 6 with memory continuity fields present.
+- Completed EPIC 2 Task 2.7: expanded event stream generator with deterministic replay coverage beyond ticket/incident status updates.
+- Added event stream coverage for support_note, customer_message, and deployment_event while preserving ticket_update and incident_update events.
+- Regenerated data/customers_seed.json and validated generator metadata version 7 with event stream type coverage present.
+- Completed EPIC 2 Task 2.4: enriched incident generator with deterministic customer-impact and deployment-failure context fields.
+- Added incident impact fields in generated data: impact_scope, customer_impact (affected_seats, affected_revenue_usd, downtime_minutes, renewal_risk_delta), and deployment_context (deployment_id, track, triggered_by_deployment, root_cause).
+- Regenerated data/customers_seed.json and validated generator metadata version 8 with incident impact schema coverage present.
+- Completed EPIC 2 Task 2.1: hardened customer generator with deterministic profile dimensions and contract metadata for realistic operational distribution.
+- Added customer profile fields in generated data: industry, region, account_tier, and contract (contract_id, term_months, billing_model, next_invoice_date, auto_renew, sla_tier).
+- Regenerated data/customers_seed.json and validated generator metadata version 9 with customer distribution telemetry present.
+- Completed EPIC 3 Task 3.2: added session-local baseline memory continuity with naive in-process chat history and state reuse.
+- Wired baseline workflow to inject prior turn snippets and session turn state into baseline graph execution for same-session continuity.
+- Validated repeated baseline runs with cold-to-hit transition signals (session-local-memory-cold -> session-local-memory-hit) and session-turn-index progression.
+- Completed EPIC 3 Task 3.3: added baseline retrieval layer with local JSON, keyword scoring, and deterministic fake-vector matching.
+- Wired baseline graph retrieval outputs into summary composition and context signals while preserving intentionally inefficient retrieval behavior.
+- Validated baseline runtime signals for baseline-keyword-retrieval-hit, baseline-fake-vector-hit, baseline-documents-scanned, and retained session-local-memory-hit continuity on repeated calls.
+- Completed EPIC 3 Task 3.4: added runtime metrics instrumentation across baseline and IRIS workflow execution paths.
+- Added derived runtime metrics fields in workflow responses: runtime_latency_ms, prompt_tokens_observed, completion_tokens_observed, retrieval_signals, tool_signals, and instrumentation_mode.
+- Validated baseline and IRIS runtime payloads include runtime metrics enrichment and runtime-latency-ms context signals.
+- Completed EPIC 4 Task 4.1 hardening: added first-class RedisJSON persistence for customer-linked contract and usage entities.
+- Extended RDI sync observability counters with synced_contracts and synced_usage in Redis status payloads.
+- Extended Redis context merge path to hydrate customer.contract and customer.usage from RedisJSON retrieval when available.
+- Completed EPIC 4 Task 4.2 hardening: extended FT.SEARCH context retrieval with query-driven filters for severity, status, and service hints.
+- Added deterministic retrieval-hint parsing and timeline context assembly from incident and ticket timeline records.
+- Validated retrieval hint parsing and timeline assembly behavior with focused checks and compile integrity validation.
+- Completed EPIC 4 Task 4.4 hardening: added deterministic memory extraction for customer preference, commitment, renewal-risk, and operational-risk facts.
+- Extended Redis memory layer with short-term and long-term list separation plus query-aware memory retrieval prioritization.
+- Wired IRIS post-processing to persist extracted long-term memory facts and emit memory extraction/write runtime signals.
+- Validated memory extraction behavior and compile integrity checks for updated Redis tools and workflow paths.
+- Completed EPIC 4 Task 4.5 hardening: extended shared operational context with persisted Redis workflow state per customer.
+- Added shared workflow-state read/write helpers and bounded context payload fields for consistent cross-turn hydration.
+- Wired IRIS context retrieval and post-processing paths to consume and persist shared workflow state with explicit runtime signals.
+- Validated shared workflow-state persistence and memory prioritization behavior with focused stub-client checks and compile integrity validation.
+- Completed EPIC 4 Task 4.6 hardening: added Redis stream-read retrieval for recent operational events with customer filtering.
+- Wired IRIS runtime to merge persisted Redis stream events with in-memory bus events and enforce most-recent-first event ordering.
+- Added explicit stream reactivity runtime signals for stream hit/empty state and stream event counts.
+- Validated stream event retrieval/filtering behavior and compile integrity checks for updated Redis stream integration paths.
+- Completed EPIC 4 Task 4.7 hardening: added similarity-based semantic cache fallback for near-duplicate prompts.
+- Added bounded per-customer cache key indexing to support deterministic semantic lookup over recent entries.
+- Added explicit cache hit traceability signals for exact and semantic hits, including similarity score telemetry.
+- Validated exact-hit and semantic-hit cache behavior with focused stub-client checks and compile integrity validation.
+- Completed EPIC 5 Task 5.4: added dashboard before-vs-after mode toggle with Baseline, IRIS, and side-by-side comparison views.
+- Reused same workflow outputs for both modes and added measurable deltas for latency, prompt tokens, retrieval calls, and tool calls.
+- Validated frontend build success after before-vs-after toggle integration.
+- Completed EPIC 5 Task 5.5 continuation: added replay playback speed control and wired selected speed into backend full-run execution.
+- Added replay progress visualization (completed steps + progress bar) and enriched event metadata with source indicators.
+- Validated frontend build success after replay-events UI completion slice.
+- Completed EPIC 6 Task 6.1: expanded benchmark harness with scenario profiles for smoke and memory-heavy/repeated-query coverage.
+- Added per-scenario benchmark breakdown output while preserving existing top-level baseline/iris metric fields for regression compatibility.
+- Updated extended CI benchmark execution to run with --scenario-profile expanded and validated benchmark script syntax/CLI flags.
+- Completed EPIC 6 Task 6.2: expanded token measurement to include prompt, completion, and total token averages in benchmark outputs.
+- Updated both standard and concurrent benchmark harness scripts to report token triplets for baseline and IRIS while keeping existing prompt token fields.
+- Validated benchmark script syntax and CLI behavior after token measurement expansion.
+- Completed EPIC 6 Task 6.3: expanded latency measurement with p50, p95, runtime latency summaries, and retrieval/LLM latency averages.
+- Added deterministic latency decomposition fields in backend runtime instrumentation for retrieval, LLM, and orchestration phases.
+- Preserved existing latency_ms_avg and latency_ms_p95 benchmark fields for compatibility with regression gating.
+- Completed EPIC 6 Task 6.4: expanded cache-effectiveness proof with cache hit rate and repeated-query savings metrics.
+- Added cache-hit signal parsing and cache hit rate reporting (overall, exact, and semantic) in standard and concurrent benchmark harness outputs.
+- Added repeated-query runtime latency savings output in standard benchmark reports to make semantic cache impact explicit.
+- Completed EPIC 6 Task 6.5: expanded multi-agent coordination metrics with retrieval signal, tool signal, and duplicate retrieval visibility.
+- Added shared-memory hit reporting from runtime context signals (agent memory and shared-workflow state hits) in standard and concurrent benchmark outputs.
+- Added baseline-vs-IRIS coordination comparison fields for retrieval/tool/duplicate-retrieval reduction and shared-memory-hit delta visibility.
 
 ---
 
@@ -1210,7 +2071,7 @@ Progress Notes:
 
 ### Task 1.4 — Setup Frontend Framework
 
-Status: IN PROGRESS
+Status: DONE (2026-05-26)
 
 Requirements:
 
@@ -1232,7 +2093,10 @@ Progress Notes:
 - Added first dashboard placeholder screen and global styling.
 - Added live events panel with browser WebSocket client connected to backend WS endpoint.
 - Added UI event injection action to demonstrate realtime update flow.
-- Tailwind and shadcn/ui integration are still pending.
+- Added TailwindCSS foundation dependencies and configuration files in frontend.
+- Added global Tailwind layer wiring and a lightweight light/dark theme toggle in the home dashboard shell.
+- Added shadcn/ui starter baseline with shared className helper and starter button/card primitives.
+- Integrated starter shadcn-style components into the home dashboard shell.
 
 ---
 
@@ -1248,7 +2112,7 @@ Build a realistic operational enterprise dataset.
 
 ### Task 2.1 — Customer Generator
 
-Status: IN PROGRESS
+Status: DONE
 
 Generate:
 
@@ -1271,10 +2135,15 @@ Progress Notes:
 - Generated data/customers_seed.json with 1000 customers and realistic distribution fields.
 - Expanded generator output to include linked stakeholders, tickets, and incidents with customer IDs.
 - Added deterministic Acme-linked stakeholder/ticket/incident records for repeatable escalation demos.
+- Added deterministic customer profile dimensions across generated records: industry, region, and account_tier.
+- Added deterministic contract metadata across generated records: contract_id, term_months, billing_model, next_invoice_date, auto_renew, and sla_tier.
+- Updated deterministic Acme customer seed with profile and contract schema and regenerated data/customers_seed.json with generator version 9 metadata.
 
 ---
 
 ### Task 2.2 — Stakeholder Generator
+
+Status: DONE
 
 Generate:
 
@@ -1289,9 +2158,17 @@ Acceptance Criteria:
 - customer-linked stakeholders exist
 - realistic communication patterns
 
+Progress Notes:
+
+- Expanded stakeholder generator in data/generate_customers.py with deterministic communication-pattern attributes and weighted sentiment based on customer health/risk context.
+- Added communication fields for seeded Acme stakeholders to keep deterministic demo records schema-aligned with generated stakeholders.
+- Regenerated data/customers_seed.json with updated stakeholder schema and generator version 3 metadata.
+
 ---
 
 ### Task 2.3 — Support Ticket Generator
+
+Status: DONE
 
 Generate:
 
@@ -1306,11 +2183,17 @@ Acceptance Criteria:
 - recurring incident patterns exist
 - ticket relationships exist
 
+Progress Notes:
+
+- Expanded ticket generator in data/generate_customers.py to emit deterministic relationship fields for origin type, linked incident reference, and escalation parent ticket reference.
+- Wired ticket generation order to use same-customer incident outputs so incident-followup and executive-escalation tickets can be linked deterministically.
+- Updated deterministic Acme ticket records with incident and escalation relationship fields and regenerated data/customers_seed.json with generator version 4 metadata.
+
 ---
 
 ### Task 2.4 — Incident Generator
 
-Status: IN PROGRESS
+Status: DONE
 
 Generate:
 
@@ -1326,12 +2209,16 @@ Acceptance Criteria:
 
 Progress Notes:
 
-- Incident generator now emits status progression timelines (investigating -> mitigated -> monitoring/resolved).
-- High-volatility scenarios now include recurring investigation transitions via recurrence_count.
+- Incident generator now emits deterministic customer-impact and deployment-failure context fields for each incident.
+- Added incident-level impact_scope plus customer_impact payload (affected_seats, affected_revenue_usd, downtime_minutes, renewal_risk_delta).
+- Added deployment_context payload (deployment_id, track, triggered_by_deployment, root_cause) while preserving timeline progression and recurrence_count behavior.
+- Updated deterministic Acme incident seed record to include the same incident impact and deployment context schema, and regenerated data/customers_seed.json with generator version 8 metadata.
 
 ---
 
 ### Task 2.5 — Usage Generator
+
+Status: DONE
 
 Generate:
 
@@ -1344,9 +2231,17 @@ Acceptance Criteria:
 
 - risk scenarios emerge naturally
 
+Progress Notes:
+
+- Expanded customer generator output with deterministic usage/adoption fields including seats_provisioned, active_seats, adoption_rate_pct, monthly_active_trend, and anomalies.
+- Added trend modeling rules that surface declining adoption and anomaly patterns aligned to risk level and health context.
+- Updated deterministic Acme customer record with declining usage trend and anomaly signals, and regenerated data/customers_seed.json with generator version 5 metadata.
+
 ---
 
 ### Task 2.6 — Memory Generator
+
+Status: DONE
 
 Generate:
 
@@ -1359,11 +2254,17 @@ Acceptance Criteria:
 
 - memory continuity scenarios exist
 
+Progress Notes:
+
+- Expanded customer generator output with deterministic memory_profile fields that model prior escalations, promises, frustrations, and communication preference continuity.
+- Added historical memory timeline entries per customer to seed cross-session continuity scenarios.
+- Updated deterministic Acme customer seed with continuity memory profile and regenerated data/customers_seed.json with generator version 6 metadata.
+
 ---
 
 ### Task 2.7 — Event Stream Generator
 
-Status: IN PROGRESS
+Status: DONE
 
 Generate:
 
@@ -1378,9 +2279,9 @@ Acceptance Criteria:
 
 Progress Notes:
 
-- Dataset generator now emits replayable operational event stream entries under event_stream.
-- Event stream entries are generated from ticket and incident timeline transitions for deterministic replay flows.
-- Backend replay APIs now discover and execute server-owned templates aligned with replayable stream semantics.
+- Expanded event stream generation in data/generate_customers.py to emit deterministic support_note, customer_message, and deployment_event entries in addition to ticket_update and incident_update events.
+- Kept event payloads customer-linked and globally time-sorted to preserve replay timeline determinism.
+- Regenerated data/customers_seed.json with generator version 7 metadata and validated multi-type event stream coverage.
 
 ---
 
@@ -1423,6 +2324,8 @@ Progress Notes:
 
 ### Task 3.2 — Local Memory
 
+Status: DONE
+
 Implement:
 
 - naive memory
@@ -1433,9 +2336,18 @@ Acceptance Criteria:
 
 - memory works only within session
 
+Progress Notes:
+
+- Added naive in-process baseline session memory store in backend/app/workflows.py keyed by customer.
+- Baseline workflow now passes local_history and local_state payloads into backend/app/langgraph_pipeline.py for same-session continuity hints.
+- Baseline graph now emits session-local-memory-cold / session-local-memory-hit and session-turn-index context signals.
+- Validated same-session behavior with repeated baseline workflow calls showing cold first turn, hit on second turn, and summary continuity note reuse.
+
 ---
 
 ### Task 3.3 — Baseline Retrieval Layer
+
+Status: DONE
 
 Implement:
 
@@ -1447,9 +2359,18 @@ Acceptance Criteria:
 
 - baseline works but is inefficient
 
+Progress Notes:
+
+- Added baseline local JSON retrieval pass in backend/app/langgraph_pipeline.py that scans customer, incident, ticket, and stakeholder seed snippets.
+- Added simple keyword retrieval scoring and deterministic fake-vector retrieval scoring paths over local seed snippets without external embedding dependencies.
+- Wired retrieval outcomes into baseline summary narrative and context signals (baseline-json-retrieval, baseline-keyword-retrieval-hit/empty, baseline-fake-vector-hit/empty, baseline-documents-scanned).
+- Validated runtime behavior with repeated baseline calls and confirmed retrieval signals and continuity behavior in baseline responses.
+
 ---
 
 ### Task 3.4 — Metrics Instrumentation
+
+Status: DONE
 
 Capture:
 
@@ -1461,6 +2382,13 @@ Capture:
 Acceptance Criteria:
 
 - metrics visible in UI
+
+Progress Notes:
+
+- Added workflow-level runtime instrumentation in backend/app/workflows.py for both baseline and IRIS execution paths using perf_counter-based latency measurement.
+- Added deterministic derived metrics for observed token estimates, retrieval signal counts, tool signal counts, and instrumentation_mode markers.
+- Added runtime instrumentation context signals (runtime-metrics-enriched and runtime-latency-ms=*) for downstream UI and benchmark consumption.
+- Validated baseline and IRIS workflow responses include runtime metrics enrichment fields and instrumentation signals.
 
 ---
 
@@ -1476,7 +2404,7 @@ Introduce Redis IRIS capabilities incrementally.
 
 ### Task 4.1 — RedisJSON Operational State
 
-Status: IN PROGRESS
+Status: DONE
 
 Move:
 
@@ -1498,6 +2426,9 @@ Progress Notes:
 - Added RDI-style RedisJSON sync in backend/app/redis_iris_tools.py to move customers, tickets, and incidents into Redis JSON keys.
 - Added customer-to-entity linkage keys for incident and ticket retrieval.
 - Added container data mount in docker-compose.yml so generated data/customers_seed.json is available to backend at /data/customers_seed.json.
+- Added first-class RedisJSON sync for contract:{customer_id} and usage:{customer_id} entities with customer linkage keys.
+- Extended Redis sync status payload to include synced_contracts and synced_usage counters for operational observability.
+- Extended Redis context and merge path so customer contract and usage data are hydrated from RedisJSON into shared operational context payloads.
 
 ---
 
@@ -1548,7 +2479,7 @@ Progress Notes:
 
 ### Task 4.4 — Redis Agent Memory
 
-Status: IN PROGRESS
+Status: DONE (2026-05-26)
 
 Implement:
 
@@ -1566,12 +2497,16 @@ Progress Notes:
 
 - Added Redis agent memory read/write in backend/app/redis_iris_tools.py via memory:<customer_id> lists.
 - Wired IRIS workflow in backend/app/workflows.py to read prior memory during context retrieval and append new memory per request.
+- Added deterministic memory-fact extraction in backend/app/redis_iris_tools.py for preference, commitment, renewal-risk, and operational-risk continuity facts.
+- Added short-term and long-term Redis memory key separation (memory:<customer_id> and memory:long:<customer_id>) with bounded deduplicated storage.
+- Added query-aware memory retrieval ranking so relevant durable memories are prioritized for shared context hydration.
+- Wired IRIS workflow post-processing to persist extracted long-term memory facts and emit redis-agent-memory-extract plus long-term write signal counters.
 
 ---
 
 ### Task 4.5 — Shared Operational Context
 
-Status: IN PROGRESS
+Status: DONE (2026-05-26)
 
 Implement:
 
@@ -1588,12 +2523,15 @@ Progress Notes:
 - Added Redis Context Retriever implementation in backend/app/redis_iris_tools.py for customer + incident + ticket retrieval.
 - Wired IRIS workflow enrichment in backend/app/workflows.py using retrieved shared operational context before LangGraph execution.
 - Added runtime signal redis-ft-search-context in backend/app/workflows.py to confirm FT.SEARCH context path usage.
+- Added shared workflow-state persistence in backend/app/redis_iris_tools.py via workflow_state:<customer_id> keys with bounded payload shape.
+- Extended Redis context hydration and merge path to include shared_workflow_state in IRIS seed payloads for cross-turn continuity.
+- Wired IRIS workflow runtime to emit redis-shared-workflow-state-hit, redis-shared-workflow-state-write, and redis-shared-workflow-turn signals.
 
 ---
 
 ### Task 4.6 — Redis Streams
 
-Status: IN PROGRESS
+Status: DONE (2026-05-26)
 
 Implement:
 
@@ -1611,12 +2549,15 @@ Progress Notes:
 - Added Redis Streams append helper in backend/app/redis_iris_tools.py (events:operational) for operational event persistence.
 - Wired event publishing path in backend/app/main.py so manual injections and replay-generated events are both published to WS subscribers and written to Redis Streams.
 - Added server-driven replay run endpoints for execution/status/cancel to support stream-aware operational playback.
+- Added Redis stream-read helper in backend/app/redis_iris_tools.py to retrieve recent operational events from events:operational with optional customer filtering.
+- Wired IRIS workflow in backend/app/workflows.py to merge stream-backed events with event-bus snapshots for resilient context hydration after restarts.
+- Added stream reactivity runtime signals in backend/app/workflows.py: redis-streams-context-hit/empty and redis-streams-context-count=*.
 
 ---
 
 ### Task 4.7 — Semantic Cache
 
-Status: IN PROGRESS
+Status: DONE (2026-05-26)
 
 Implement:
 
@@ -1632,6 +2573,9 @@ Progress Notes:
 
 - Added LangCache-style response cache in backend/app/redis_iris_tools.py with TTL-based storage.
 - Wired IRIS workflow in backend/app/workflows.py to return cache hits early and write back cache entries on completion.
+- Extended Redis cache retrieval in backend/app/redis_iris_tools.py with similarity fallback across bounded per-customer cache indexes.
+- Added exact-hit and semantic-hit trace signals (redis-langcache-exact-hit, redis-langcache-semantic-hit, redis-langcache-similarity=*).
+- Preserved backward-compatible reads for legacy direct cache payloads while storing wrapped payloads for semantic lookup metadata.
 
 ---
 
@@ -1682,7 +2626,7 @@ Acceptance Criteria:
 
 ### Task 5.3 — Metrics Visualization
 
-Status: IN PROGRESS
+Status: DONE (2026-05-26)
 
 Implement:
 
@@ -1700,10 +2644,15 @@ Progress Notes:
 - Added benchmark trend visualization panel with baseline vs IRIS latency/token trends in frontend/components/benchmark-trend-panel.tsx.
 - Added latest snapshot KPI summaries for latency average, p95 latency, prompt tokens, and computed IRIS improvement percentages.
 - Metrics panel is sourced from trend-history snapshots via backend endpoint GET /api/benchmarks/trends.
+- Added runtime metrics panel in frontend/components/runtime-metrics-panel.tsx for live baseline-vs-IRIS request-level instrumentation.
+- Added comparative bars and improvement indicators for runtime latency, prompt tokens, memory hits, cache hits, retrieval signals, and tool signals.
+- Integrated runtime metrics panel into frontend/app/page.tsx to make before/after signals visible immediately on each dashboard refresh.
 
 ---
 
 ### Task 5.4 — Before vs After Toggle
+
+Status: DONE (2026-05-26)
 
 Implement:
 
@@ -1715,11 +2664,17 @@ Acceptance Criteria:
 - same workflow runs in both modes
 - differences measurable
 
+Progress Notes:
+
+- Added before/after toggle panel in frontend/components/before-after-toggle-panel.tsx with Baseline mode, IRIS mode, and side-by-side comparison mode.
+- Integrated toggle panel into frontend/app/page.tsx and removed static duplicated baseline/IRIS cards in favor of mode-based viewing.
+- Added measurable delta indicators for latency, prompt tokens, retrieval calls, and tool calls derived from the same request run outputs.
+
 ---
 
 ### Task 5.5 — Replay Events UI
 
-Status: IN PROGRESS
+Status: DONE (2026-05-26)
 
 Implement:
 
@@ -1742,6 +2697,12 @@ Progress Notes:
 - Frontend replay controls now execute server-driven replays through POST /api/replay/execute (step and full modes).
 - Frontend replay panel now polls GET /api/replay/runs/{run_id} to reflect backend run progress and timeline advancement.
 - Frontend replay panel now includes cancel control wired to POST /api/replay/runs/{run_id}/cancel for active full replay runs.
+- Added runtime metrics visualization panel comparing baseline vs IRIS live request instrumentation.
+- Added side-by-side charts for latency, prompt tokens, memory hits, cache hits, retrieval signals, and tool signals.
+- Integrated runtime metrics panel into dashboard and validated responsive rendering in production build.
+- Added replay playback-speed selector (0.5x to 10x) in frontend/components/live-events-panel.tsx and wired selected speed to replay run execution payload.
+- Added replay progress indicator and completed-step counters so stream playback advancement is visible in realtime.
+- Added source metadata display for received events to distinguish manual, replay-template, and stream-originated updates.
 
 ---
 
@@ -1757,7 +2718,7 @@ Prove Redis IRIS improvements quantitatively.
 
 ### Task 6.1 — Benchmark Harness
 
-Status: IN PROGRESS
+Status: DONE (2026-05-26)
 
 Simulate:
 
@@ -1785,10 +2746,15 @@ Progress Notes:
 - Added concurrent benchmark output path at benchmarks/reports/concurrent-latest.json.
 - Added frontend benchmark trend visualization integrated into the dashboard shell from trend-history snapshots.
 - Added CI artifact upload bundles for smoke and extended benchmark outputs in .github/workflows/ci.yml.
+- Added scenario-profile support in benchmarks/run_benchmark.py with smoke and expanded workload modes.
+- Added deterministic scenario matrix coverage for repeated-query and memory-heavy prompt flows with per-scenario benchmark breakdown output.
+- Updated extended CI benchmark run to execute run_benchmark.py with --scenario-profile expanded.
 
 ---
 
 ### Task 6.2 — Token Measurement
+
+Status: DONE (2026-05-26)
 
 Measure:
 
@@ -1800,9 +2766,18 @@ Acceptance Criteria:
 
 - token reduction measurable
 
+Progress Notes:
+
+- Expanded benchmarks/run_benchmark.py to extract and report prompt_tokens_avg, completion_tokens_avg, and total_tokens_avg for baseline and IRIS modes.
+- Expanded per-scenario benchmark breakdown output with the same token triplet so token reductions are visible by workload shape.
+- Expanded benchmarks/run_concurrent_benchmark.py to include prompt/completion/total token averages under concurrent load.
+- Preserved existing prompt_tokens_avg fields for compatibility with existing regression and visualization consumers.
+
 ---
 
 ### Task 6.3 — Latency Measurement
+
+Status: DONE (2026-05-26)
 
 Measure:
 
@@ -1815,9 +2790,18 @@ Acceptance Criteria:
 
 - latency reductions visible
 
+Progress Notes:
+
+- Expanded benchmarks/run_benchmark.py with latency_ms_p50 while preserving existing latency_ms_avg and latency_ms_p95 outputs used by regression checks.
+- Added runtime latency summaries (runtime_latency_ms_avg, runtime_latency_ms_p50, runtime_latency_ms_p95) from runtime instrumentation metrics.
+- Added retrieval_latency_ms_avg and llm_latency_ms_avg reporting for baseline and IRIS benchmarks in both standard and concurrent harness scripts.
+- Expanded backend runtime instrumentation in backend/app/workflows.py with deterministic retrieval/LLM/orchestration latency decomposition fields.
+
 ---
 
 ### Task 6.4 — Cache Effectiveness
+
+Status: DONE (2026-05-26)
 
 Measure:
 
@@ -1828,9 +2812,18 @@ Acceptance Criteria:
 
 - semantic cache value visible
 
+Progress Notes:
+
+- Expanded benchmarks/run_benchmark.py to parse cache-hit context signals and report cache_hits, cache_exact_hits, cache_semantic_hits, and cache_hit_rate_pct.
+- Added repeated-query runtime latency savings metrics in standard benchmark output (first-query vs repeated-query runtime latency averages and savings percentage).
+- Expanded benchmarks/run_concurrent_benchmark.py with cache hit metrics and cache hit rate reporting under concurrent load.
+- Preserved existing latency/token benchmark fields used by regression gate and trend consumers.
+
 ---
 
 ### Task 6.5 — Multi-Agent Coordination Metrics
+
+Status: DONE (2026-05-26)
 
 Measure:
 
@@ -1841,6 +2834,13 @@ Measure:
 Acceptance Criteria:
 
 - coordination improvements visible
+
+Progress Notes:
+
+- Expanded benchmarks/run_benchmark.py to extract retrieval_signals and tool_signals from runtime metrics and report duplicate_retrieval_signals_avg.
+- Added shared_memory_hits and shared_memory_hit_rate_pct from runtime context signals (redis-agent-memory-hit and redis-shared-workflow-state-hit).
+- Added coordination_comparison output in standard and concurrent harness reports for retrieval/tool/duplicate-retrieval reductions plus shared-memory-hit-rate delta.
+- Preserved existing benchmark output fields used by regression checks and trend consumers while appending coordination metrics.
 
 ---
 
@@ -2703,6 +3703,168 @@ Progress Notes:
 
 - Added optional Guided Demo overlay in Learning Mode with step-by-step presenter instructions.
 - Implemented six scripted walkthrough steps and linked them to diagram mode/step focus so presenters can progress without memorized flow.
+
+---
+
+## Task 9.9 — MAF Portability Mapping Panel
+
+Status: DONE (2026-05-26)
+
+Display:
+
+- current architecture components
+- MAF equivalent building blocks
+- portability notes and migration effort
+- staged migration sequence
+
+Acceptance Criteria:
+
+- presenter can explain how this architecture ports to MAF without re-architecting Redis context strategy
+
+Progress Notes:
+
+- Added backend endpoint GET /api/learning/maf-portability with component mapping and migration plan payload.
+- Added Learning Mode MAF portability panel with mapping table and migration steps for presenter walkthrough.
+
+---
+
+## Task 9.10 — Presenter Auto-Tour Mode
+
+Status: DONE (2026-05-26)
+
+Add presenter auto-tour mode with timed highlights:
+
+```text
+Timed guided-step progression
++ focus-node highlight transitions
++ mode/step synchronization
++ tour status visibility
+```
+
+Acceptance Criteria:
+
+- presenter can run the architecture walkthrough hands-free with paced, timed highlights
+
+Progress Notes:
+
+- Added timed auto-tour controls to Learning Mode Guided Demo with start/stop behavior and final-step auto-stop.
+- Kept auto-tour synchronized with guided step mode switching, flow-step focus, and node highlight selection.
+- Added guided overlay tour status metadata and cadence visibility for presenter pacing.
+
+---
+
+## Task 9.11 — Baseline-vs-IRIS Context Diff Narrative
+
+Status: DONE (2026-05-26)
+
+Display side-by-side context narrative:
+
+```text
+Baseline context assembly
+vs
+IRIS shared context packet
+```
+
+Acceptance Criteria:
+
+- presenter can explain exactly what context changes between baseline and IRIS and why response quality and efficiency improve
+
+Progress Notes:
+
+- Added backend endpoint GET /api/learning/context-diff with baseline and IRIS packet snapshots, narrative deltas, and comparison metrics.
+- Added Learning Mode Context Diff Narrative panel with side-by-side packet cards and presenter-ready delta callouts.
+
+---
+
+## Enhancement — Narrated Metrics Storytelling Mode
+
+Status: DONE (2026-05-26)
+
+Deliver narrated pacing flow:
+
+```text
+chaptered KPI narrative
++ timed playback
++ executive talk track prompts
+```
+
+Acceptance Criteria:
+
+- presenter can run a metrics-focused story sequence with clear pacing and chapter-by-chapter business messaging
+
+Progress Notes:
+
+- Added backend endpoint GET /api/learning/metrics-storytelling with chapter narratives, KPI highlights, and default pacing metadata.
+- Added interactive Learning Mode storytelling panel with chapter playback controls and presenter hints.
+
+---
+
+## Enhancement — Audience Q and A Mode with Pre-Mapped Architecture Answers
+
+Status: DONE (2026-05-26)
+
+Deliver live audience answer support:
+
+```text
+curated audience questions
++ pre-mapped architecture answers
++ category-driven quick navigation
+```
+
+Acceptance Criteria:
+
+- presenter can rapidly answer common architecture, performance, reliability, portability, and operations questions using pre-mapped guided responses
+
+Progress Notes:
+
+- Added backend endpoint GET /api/learning/audience-qa with curated questions, mapped component anchors, and presenter sequencing hint.
+- Added interactive Learning Mode Audience Q and A panel with category tabs, question picker, and mapped component chips.
+
+---
+
+## Enhancement — Exportable Learning Summary Handout for Stakeholder Follow-up
+
+Status: DONE (2026-05-26)
+
+Deliver post-demo handout support:
+
+```text
+stakeholder summary sections
++ measurable proof points
++ exportable follow-up artifact
+```
+
+Acceptance Criteria:
+
+- presenter can provide a concise, exportable follow-up handout summarizing architecture outcomes and business impact
+
+Progress Notes:
+
+- Added backend endpoint GET /api/learning/summary-handout with handout sections, takeaways, and export metadata.
+- Added Learning Mode handout panel with stakeholder summary rendering and JSON download action.
+
+---
+
+## Enhancement — Presenter Annotation Mode for Technical vs Executive Talk Tracks
+
+Status: DONE (2026-05-26)
+
+Deliver role-aware presenter guidance:
+
+```text
+technical and executive tracks
++ topic-level speaking prompts
++ audience-adaptive demo narration
+```
+
+Acceptance Criteria:
+
+- presenter can switch between executive and technical narration modes without leaving the Learning Mode flow
+
+Progress Notes:
+
+- Added backend endpoint GET /api/learning/presenter-annotations with dual-track presenter annotations and section focus metrics.
+- Added Learning Mode presenter annotation panel with track switching and topic-level talk tracks.
 
 ---
 

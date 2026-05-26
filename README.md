@@ -158,7 +158,16 @@ Learning Mode backend payloads now expose architecture and explanatory flow data
 - GET http://localhost:8000/api/learning/flow/iris
 - GET http://localhost:8000/api/learning/component/{component_id}
 - GET http://localhost:8000/api/learning/context-packet
+- GET http://localhost:8000/api/learning/context-diff
 - GET http://localhost:8000/api/learning/metrics-education
+- GET http://localhost:8000/api/learning/metrics-storytelling
+- GET http://localhost:8000/api/learning/maf-portability
+- GET http://localhost:8000/api/learning/audience-qa
+- GET http://localhost:8000/api/learning/summary-handout
+- GET http://localhost:8000/api/learning/presenter-annotations
+- GET http://localhost:8000/api/learning/fallback-scripts
+- GET http://localhost:8000/api/learning/quiz-checkpoints
+- GET http://localhost:8000/api/learning/qa-anchors
 
 ## Repository Structure
 

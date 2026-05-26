@@ -97,7 +97,7 @@ jobs:
         run: docker compose exec -T backend python scripts/verify_redis_stack.py --host redis --port 6379
 
       - name: Endpoint benchmark extended
-        run: python3 benchmarks/run_benchmark.py --base-url http://localhost:8000 --iterations 20 --output benchmarks/reports/ci-extended.json
+        run: python3 benchmarks/run_benchmark.py --base-url http://localhost:8000 --iterations 20 --scenario-profile expanded --output benchmarks/reports/ci-extended.json
 
       - name: Endpoint benchmark concurrent scenario
         run: python3 benchmarks/run_concurrent_benchmark.py --base-url http://localhost:8000 --workers 8 --rounds 5 --output benchmarks/reports/concurrent-latest.json

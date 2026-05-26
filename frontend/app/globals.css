@@ -1,8 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --bg: #071013;
   --bg-soft: #132126;
   --text: #e7f2f6;
   --accent: #5fbff9;
+}
+
+:root[data-theme="light"] {
+  --bg: #eef5f8;
+  --bg-soft: #ffffff;
+  --text: #0f1d24;
+  --accent: #086ea8;
 }
 
 * {
@@ -20,6 +31,13 @@ body {
     var(--bg);
 }
 
+:root[data-theme="light"] body {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(52, 150, 211, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 80% 10%, rgba(6, 110, 168, 0.15) 0%, transparent 35%),
+    var(--bg);
+}
+
 .page {
   min-height: 100vh;
   display: grid;
@@ -33,6 +51,11 @@ body {
   border-radius: 14px;
   background: linear-gradient(180deg, rgba(19, 33, 38, 0.9), rgba(10, 19, 24, 0.9));
   padding: 1.2rem;
+}
+
+:root[data-theme="light"] .card {
+  border: 1px solid rgba(8, 110, 168, 0.22);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(246, 250, 252, 0.96));
 }
 
 h1,
@@ -106,6 +129,22 @@ li {
   gap: 0.5rem;
   flex-wrap: wrap;
   margin-top: 0.6rem;
+}
+
+.replayProgress {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(95, 191, 249, 0.25);
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  margin-top: 0.45rem;
+}
+
+.replayProgressFill {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(95, 191, 249, 0.6), rgba(41, 196, 183, 0.9));
+  transition: width 260ms ease;
 }
 
 .timelineList {
@@ -210,6 +249,95 @@ li {
   margin-bottom: 0;
   color: rgba(231, 242, 246, 0.78);
   font-size: 0.82rem;
+}
+
+.toggleModeButtons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.toggleModeButton {
+  border: 1px solid rgba(95, 191, 249, 0.3);
+  border-radius: 999px;
+  background: rgba(95, 191, 249, 0.08);
+  color: var(--text);
+  padding: 0.3rem 0.75rem;
+  cursor: pointer;
+}
+
+.toggleModeButton.isActive {
+  border-color: rgba(95, 191, 249, 0.65);
+  background: rgba(95, 191, 249, 0.24);
+}
+
+.toggleModeGrid,
+.toggleDeltaGrid {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.toggleModeCard {
+  border: 1px solid rgba(95, 191, 249, 0.22);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.6rem;
+}
+
+.toggleModeCard h3 {
+  margin-top: 0;
+  margin-bottom: 0.35rem;
+  font-size: 0.95rem;
+}
+
+.toggleModeCard p {
+  margin: 0.2rem 0;
+}
+
+.runtimeMetricGrid,
+.runtimeSignalGrid {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.runtimeMetricCard {
+  border: 1px solid rgba(95, 191, 249, 0.22);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.6rem;
+}
+
+.runtimeMetricCard h3 {
+  margin-top: 0;
+  margin-bottom: 0.35rem;
+  font-size: 0.95rem;
+}
+
+.runtimeMetricCard p {
+  margin: 0.2rem 0;
+}
+
+.runtimeMetricBars {
+  margin-top: 0.5rem;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.runtimeMetricBar {
+  height: 8px;
+  border-radius: 999px;
+  min-width: 8px;
+  transition: width 240ms ease;
+}
+
+.runtimeMetricBarBaseline {
+  background: linear-gradient(90deg, rgba(245, 159, 69, 0.7), rgba(245, 159, 69, 1));
+}
+
+.runtimeMetricBarIris {
+  background: linear-gradient(90deg, rgba(41, 196, 183, 0.7), rgba(41, 196, 183, 1));
 }
 
 .learningDiagramShell {
@@ -413,6 +541,406 @@ li {
   grid-column: span 2;
 }
 
+.learningMappingTableWrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.learningMappingTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.learningMappingTable th,
+.learningMappingTable td {
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  padding: 0.45rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.learningMappingTable th {
+  background: rgba(95, 191, 249, 0.12);
+}
+
+.learningStoryPanel {
+  border: 1px solid rgba(95, 191, 249, 0.24);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(8, 20, 24, 0.78), rgba(6, 14, 17, 0.82));
+  padding: 0.8rem;
+}
+
+.learningStoryHeader h3 {
+  margin: 0;
+}
+
+.learningStoryHeader .eventMeta {
+  margin: 0.2rem 0 0.6rem;
+}
+
+.learningStoryBody {
+  margin-top: 0.75rem;
+  border-top: 1px solid rgba(95, 191, 249, 0.16);
+  padding-top: 0.7rem;
+}
+
+.learningStoryBody h4 {
+  margin: 0;
+}
+
+.learningQaPanel {
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 14px;
+  background: rgba(5, 14, 18, 0.76);
+  padding: 0.8rem;
+}
+
+.learningQaHeader h3 {
+  margin: 0;
+}
+
+.learningQaHeader p {
+  margin: 0.25rem 0 0.7rem;
+  color: rgba(209, 236, 249, 0.84);
+}
+
+.learningQaCategories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.65rem;
+}
+
+.learningQaCategoryButton {
+  border: 1px solid rgba(95, 191, 249, 0.25);
+  border-radius: 999px;
+  background: rgba(95, 191, 249, 0.1);
+  color: rgba(228, 247, 255, 0.94);
+  text-transform: capitalize;
+  font-size: 0.82rem;
+  padding: 0.2rem 0.65rem;
+  cursor: pointer;
+}
+
+.learningQaCategoryButton.isActive {
+  background: rgba(95, 191, 249, 0.24);
+  border-color: rgba(95, 191, 249, 0.56);
+}
+
+.learningQaContent {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(280px, 1.4fr);
+  gap: 0.65rem;
+}
+
+.learningQaQuestionList {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.learningQaQuestionButton {
+  text-align: left;
+  border: 1px solid rgba(95, 191, 249, 0.22);
+  border-radius: 10px;
+  background: rgba(9, 26, 31, 0.64);
+  color: rgba(228, 247, 255, 0.94);
+  font-size: 0.86rem;
+  padding: 0.5rem 0.6rem;
+  cursor: pointer;
+}
+
+.learningQaQuestionButton.isActive {
+  border-color: rgba(95, 191, 249, 0.6);
+  background: rgba(95, 191, 249, 0.2);
+}
+
+.learningQaAnswerCard {
+  border: 1px solid rgba(95, 191, 249, 0.22);
+  border-radius: 12px;
+  background: rgba(8, 20, 24, 0.78);
+  padding: 0.7rem;
+}
+
+.learningQaPrompt {
+  margin: 0 0 0.45rem;
+  color: rgba(95, 191, 249, 0.9);
+  font-weight: 600;
+}
+
+.learningQaMappings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.55rem;
+}
+
+.learningQaMappings span {
+  border: 1px solid rgba(95, 191, 249, 0.24);
+  border-radius: 999px;
+  background: rgba(95, 191, 249, 0.1);
+  color: rgba(212, 240, 251, 0.9);
+  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.learningHandoutPanel {
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 14px;
+  background: rgba(6, 18, 23, 0.78);
+  padding: 0.8rem;
+}
+
+.learningHandoutHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-bottom: 0.7rem;
+}
+
+.learningHandoutHeader h3 {
+  margin: 0;
+}
+
+.learningHandoutHeader p {
+  margin: 0.25rem 0 0;
+  color: rgba(209, 236, 249, 0.82);
+}
+
+.learningHandoutGrid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.learningHandoutGrid h4,
+.learningHandoutPanel h4 {
+  margin: 0 0 0.45rem;
+}
+
+.learningAnnotationPanel {
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 14px;
+  background: rgba(5, 16, 21, 0.78);
+  padding: 0.8rem;
+}
+
+.learningAnnotationHeader h3 {
+  margin: 0;
+}
+
+.learningAnnotationHeader p {
+  margin: 0.25rem 0 0.65rem;
+  color: rgba(209, 236, 249, 0.82);
+}
+
+.learningAnnotationTrackButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.55rem;
+}
+
+.learningAnnotationTrackButton {
+  border: 1px solid rgba(95, 191, 249, 0.26);
+  border-radius: 999px;
+  background: rgba(95, 191, 249, 0.1);
+  color: rgba(228, 247, 255, 0.94);
+  font-size: 0.82rem;
+  padding: 0.2rem 0.65rem;
+  cursor: pointer;
+}
+
+.learningAnnotationTrackButton.isActive {
+  background: rgba(95, 191, 249, 0.24);
+  border-color: rgba(95, 191, 249, 0.56);
+}
+
+.learningAnnotationGrid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.learningAnnotationMetrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.learningAnnotationMetrics span {
+  border: 1px solid rgba(95, 191, 249, 0.24);
+  border-radius: 999px;
+  background: rgba(95, 191, 249, 0.1);
+  color: rgba(212, 240, 251, 0.9);
+  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.learningFallbackPanel {
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 14px;
+  background: rgba(6, 17, 22, 0.78);
+  padding: 0.8rem;
+}
+
+.learningFallbackHeader h3 {
+  margin: 0;
+}
+
+.learningFallbackHeader p {
+  margin: 0.25rem 0 0.65rem;
+  color: rgba(209, 236, 249, 0.82);
+}
+
+.learningFallbackButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.6rem;
+}
+
+.learningFallbackButton {
+  border: 1px solid rgba(95, 191, 249, 0.26);
+  border-radius: 999px;
+  background: rgba(95, 191, 249, 0.1);
+  color: rgba(228, 247, 255, 0.94);
+  font-size: 0.82rem;
+  padding: 0.2rem 0.65rem;
+  cursor: pointer;
+}
+
+.learningFallbackButton.isActive {
+  background: rgba(95, 191, 249, 0.24);
+  border-color: rgba(95, 191, 249, 0.56);
+}
+
+.learningQuizPanel {
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 14px;
+  background: rgba(6, 17, 22, 0.78);
+  padding: 0.8rem;
+}
+
+.learningQuizHeader h3 {
+  margin: 0;
+}
+
+.learningQuizHeader p {
+  margin: 0.25rem 0 0.65rem;
+  color: rgba(209, 236, 249, 0.82);
+}
+
+.learningQuizChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.6rem;
+}
+
+.learningQuizChip {
+  border: 1px solid rgba(95, 191, 249, 0.26);
+  border-radius: 999px;
+  background: rgba(95, 191, 249, 0.1);
+  color: rgba(228, 247, 255, 0.94);
+  font-size: 0.82rem;
+  padding: 0.2rem 0.65rem;
+  cursor: pointer;
+}
+
+.learningQuizChip.isActive {
+  background: rgba(95, 191, 249, 0.24);
+  border-color: rgba(95, 191, 249, 0.56);
+}
+
+.learningQuizOptions {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.7rem 0;
+}
+
+.learningQuizOption {
+  text-align: left;
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 10px;
+  background: rgba(95, 191, 249, 0.08);
+  color: rgba(224, 245, 255, 0.94);
+  padding: 0.45rem 0.6rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.learningQuizOption.isSelected {
+  border-color: rgba(95, 191, 249, 0.55);
+  background: rgba(95, 191, 249, 0.18);
+}
+
+.learningQuizOption.isWrong {
+  border-color: rgba(255, 125, 125, 0.75);
+  background: rgba(255, 125, 125, 0.15);
+}
+
+.learningQuizOption.isCorrect {
+  border-color: rgba(126, 232, 174, 0.75);
+  background: rgba(126, 232, 174, 0.16);
+}
+
+.learningQuizActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.35rem 0 0.6rem;
+}
+
+.learningQuizExplanation p {
+  margin: 0 0 0.45rem;
+}
+
+.learningQuizComponents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.learningQuizComponents span {
+  border: 1px solid rgba(95, 191, 249, 0.24);
+  border-radius: 999px;
+  background: rgba(95, 191, 249, 0.1);
+  color: rgba(212, 240, 251, 0.9);
+  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.learningAnchorPanel {
+  border: 1px solid rgba(95, 191, 249, 0.2);
+  border-radius: 14px;
+  background: rgba(6, 17, 22, 0.78);
+  padding: 0.8rem;
+}
+
+.learningAnchorHeader h3 {
+  margin: 0;
+}
+
+.learningAnchorHeader p {
+  margin: 0.25rem 0 0.65rem;
+  color: rgba(209, 236, 249, 0.82);
+}
+
+.learningAnchorGrid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.learningAnchorLink {
+  display: inline-flex;
+  margin-top: 0.45rem;
+  text-decoration: none;
+}
+
 @media (max-width: 900px) {
   .trendSpan2 {
     grid-column: auto;
@@ -428,5 +956,13 @@ li {
 
   .learningInfoCardWide {
     grid-column: auto;
+  }
+
+  .learningQaContent {
+    grid-template-columns: 1fr;
+  }
+
+  .learningHandoutHeader {
+    flex-direction: column;
   }
 }

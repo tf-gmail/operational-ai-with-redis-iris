@@ -1,5 +1,10 @@
 import BenchmarkTrendPanel from "../components/benchmark-trend-panel";
+import BeforeAfterTogglePanel from "../components/before-after-toggle-panel";
 import LiveEventsPanel from "../components/live-events-panel";
+import RuntimeMetricsPanel from "../components/runtime-metrics-panel";
+import ThemeToggle from "../components/theme-toggle";
+import { Button } from "../components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import Link from "next/link";
 
 export default async function HomePage() {
@@ -92,15 +97,22 @@ export default async function HomePage() {
 
   return (
     <main className="page">
-      <section className="card">
-        <h1>Operational AI with Redis IRIS</h1>
-        <p>Foundation milestone completed. Dashboard implementation starts next.</p>
-        <p>
-          <Link href="/learning" className="injectButton">
-            Open Learning Mode
-          </Link>
-        </p>
-      </section>
+      <Card className="card">
+        <CardHeader>
+          <CardTitle>Operational AI with Redis IRIS</CardTitle>
+          <CardDescription>Foundation milestone completed. Dashboard implementation starts next.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p>
+            <ThemeToggle />
+          </p>
+          <p>
+            <Link href="/learning">
+              <Button variant="outline">Open Learning Mode</Button>
+            </Link>
+          </p>
+        </CardContent>
+      </Card>
       <section className="card">
         <h2>Service Status</h2>
         <p>Backend health: {health}</p>
@@ -113,20 +125,8 @@ export default async function HomePage() {
           <li>Upgrade this screen to the 3-column operations dashboard</li>
         </ul>
       </section>
-      <section className="card">
-        <h2>Baseline</h2>
-        <p>{baseline?.summary ?? "No baseline result yet (backend unavailable)."}</p>
-        <p>Latency: {baseline?.metrics?.latency_ms ?? "n/a"} ms</p>
-        <p>Prompt tokens: {baseline?.metrics?.prompt_tokens ?? "n/a"}</p>
-        <p>Retrieval calls: {baseline?.metrics?.retrieval_calls ?? "n/a"}</p>
-      </section>
-      <section className="card">
-        <h2>IRIS</h2>
-        <p>{iris?.summary ?? "No IRIS result yet (backend unavailable)."}</p>
-        <p>Latency: {iris?.metrics?.latency_ms ?? "n/a"} ms</p>
-        <p>Prompt tokens: {iris?.metrics?.prompt_tokens ?? "n/a"}</p>
-        <p>Retrieval calls: {iris?.metrics?.retrieval_calls ?? "n/a"}</p>
-      </section>
+      <BeforeAfterTogglePanel baseline={baseline} iris={iris} />
+      <RuntimeMetricsPanel baseline={baseline?.metrics ?? null} iris={iris?.metrics ?? null} />
       <BenchmarkTrendPanel entries={trendEntries} />
       <LiveEventsPanel apiBase={apiBase} />
     </main>

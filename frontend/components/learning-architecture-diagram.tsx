@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import ReactFlow, {
   Background,
@@ -111,6 +111,8 @@ const GUIDED_DEMO_STEPS: GuidedDemoStep[] = [
     focusNodeId: "metrics_collector",
   },
 ];
+
+const AUTO_TOUR_INTERVAL_MS = 2600;
 
 const NODE_POSITIONS: Record<string, { x: number; y: number }> = {
   user: { x: 0, y: 180 },
@@ -228,6 +230,7 @@ export default function LearningArchitectureDiagram({
   const [componentDetailLoading, setComponentDetailLoading] = useState(false);
   const [guidedOverlayOpen, setGuidedOverlayOpen] = useState(false);
   const [guidedStepIndex, setGuidedStepIndex] = useState(0);
+  const [isGuidedAutoTour, setIsGuidedAutoTour] = useState(false);
 
   const baselineActive = useMemo(() => collectActiveIds(baselineSteps), [baselineSteps]);
   const irisActive = useMemo(() => collectActiveIds(irisSteps), [irisSteps]);
@@ -322,6 +325,12 @@ export default function LearningArchitectureDiagram({
   useEffect(() => {
     setIsPlaying(false);
   }, [mode]);
+
+  useEffect(() => {
+    if (!guidedOverlayOpen) {
+      setIsGuidedAutoTour(false);
+    }
+  }, [guidedOverlayOpen]);
 
   useEffect(() => {
     if (!selectedNodeId) {
@@ -428,7 +437,7 @@ export default function LearningArchitectureDiagram({
     return comparisonStepCount;
   };
 
-  const applyGuidedStep = (index: number) => {
+  const applyGuidedStep = useCallback((index: number) => {
     const step = GUIDED_DEMO_STEPS[index];
     if (!step) {
       return;
@@ -452,19 +461,38 @@ export default function LearningArchitectureDiagram({
     if (step.focusNodeId && nodes.some((node) => node.id === step.focusNodeId)) {
       setSelectedNodeId(step.focusNodeId);
     }
-  };
+  }, [comparisonStepCount, baselineStepCount, irisStepCount, mode, nodes]);
 
-  const startGuidedDemo = () => {
+  const startGuidedDemo = useCallback(() => {
     setGuidedOverlayOpen(true);
     setGuidedStepIndex(0);
     applyGuidedStep(0);
-  };
+  }, [applyGuidedStep]);
 
-  const goToGuidedStep = (nextIndex: number) => {
+  const goToGuidedStep = useCallback((nextIndex: number) => {
     const boundedIndex = clampStepIndex(nextIndex, GUIDED_DEMO_STEPS.length);
     setGuidedStepIndex(boundedIndex);
     applyGuidedStep(boundedIndex);
-  };
+  }, [applyGuidedStep]);
+
+  useEffect(() => {
+    if (!guidedOverlayOpen || !isGuidedAutoTour) {
+      return;
+    }
+
+    if (guidedStepIndex >= GUIDED_DEMO_STEPS.length - 1) {
+      setIsGuidedAutoTour(false);
+      return;
+    }
+
+    const handle = window.setTimeout(() => {
+      const nextIndex = clampStepIndex(guidedStepIndex + 1, GUIDED_DEMO_STEPS.length);
+      setGuidedStepIndex(nextIndex);
+      applyGuidedStep(nextIndex);
+    }, AUTO_TOUR_INTERVAL_MS);
+
+    return () => window.clearTimeout(handle);
+  }, [guidedOverlayOpen, isGuidedAutoTour, guidedStepIndex, applyGuidedStep]);
 
   useEffect(() => {
     if (!nodes.length) {
@@ -686,6 +714,7 @@ export default function LearningArchitectureDiagram({
               type="button"
               onClick={() => {
                 if (guidedOverlayOpen) {
+                  setIsGuidedAutoTour(false);
                   setGuidedOverlayOpen(false);
                   return;
                 }
@@ -694,25 +723,50 @@ export default function LearningArchitectureDiagram({
             >
               {guidedOverlayOpen ? "Hide Guided Demo" : "Guided Demo"}
             </button>
+            <button
+              className={`learningModeButton ${isGuidedAutoTour ? "is-active" : ""}`}
+              type="button"
+              disabled={!guidedOverlayOpen}
+              onClick={() => {
+                if (!guidedOverlayOpen) {
+                  return;
+                }
+
+                if (guidedStepIndex >= GUIDED_DEMO_STEPS.length - 1) {
+                  startGuidedDemo();
+                }
+
+                setIsGuidedAutoTour((prev) => !prev);
+              }}
+            >
+              {isGuidedAutoTour ? "Stop Auto Tour" : "Start Auto Tour"}
+            </button>
           </div>
           <p className="eventMeta">
             Step {currentStepCount ? currentStepIndex + 1 : 0}/{currentStepCount}: {currentStepTitle ?? "No flow step loaded"}
           </p>
           <p className="eventMeta">{currentStepDescription ?? "Flow details unavailable for this mode."}</p>
+          <p className="eventMeta">Auto-tour cadence: {AUTO_TOUR_INTERVAL_MS / 1000}s per guided step.</p>
         </div>
         {guidedOverlayOpen ? (
           <div className="learningGuidedOverlay">
-            <p className="learningInspectorEyebrow">EPIC 9 · Task 9.8 Guided Demo</p>
+            <p className="learningInspectorEyebrow">EPIC 9 · Task 9.8 / 9.10 Guided Demo</p>
             <h4>{guidedStep.title}</h4>
             <p>{guidedStep.instruction}</p>
             <p className="eventMeta">
               Guided step {guidedStepIndex + 1}/{GUIDED_DEMO_STEPS.length}
             </p>
+            <p className="eventMeta">
+              Auto Tour: {isGuidedAutoTour ? "Running timed highlights for presenters" : "Paused"}
+            </p>
             <div className="learningPlaybackButtons">
               <button
                 className="learningModeButton"
                 type="button"
-                onClick={() => goToGuidedStep(guidedStepIndex - 1)}
+                onClick={() => {
+                  setIsGuidedAutoTour(false);
+                  goToGuidedStep(guidedStepIndex - 1);
+                }}
                 disabled={guidedStepIndex <= 0}
               >
                 Previous Guided Step
@@ -720,13 +774,35 @@ export default function LearningArchitectureDiagram({
               <button
                 className="learningModeButton"
                 type="button"
-                onClick={() => goToGuidedStep(guidedStepIndex + 1)}
+                onClick={() => {
+                  setIsGuidedAutoTour(false);
+                  goToGuidedStep(guidedStepIndex + 1);
+                }}
                 disabled={guidedStepIndex >= GUIDED_DEMO_STEPS.length - 1}
               >
                 Next Guided Step
               </button>
-              <button className="learningModeButton" type="button" onClick={() => startGuidedDemo()}>
+              <button
+                className="learningModeButton"
+                type="button"
+                onClick={() => {
+                  setIsGuidedAutoTour(false);
+                  startGuidedDemo();
+                }}
+              >
                 Restart Guided Demo
+              </button>
+              <button
+                className={`learningModeButton ${isGuidedAutoTour ? "is-active" : ""}`}
+                type="button"
+                onClick={() => {
+                  if (guidedStepIndex >= GUIDED_DEMO_STEPS.length - 1) {
+                    startGuidedDemo();
+                  }
+                  setIsGuidedAutoTour((prev) => !prev);
+                }}
+              >
+                {isGuidedAutoTour ? "Pause Timed Tour" : "Run Timed Tour"}
               </button>
             </div>
           </div>
@@ -761,7 +837,7 @@ export default function LearningArchitectureDiagram({
       </div>
 
       <aside className="learningInspectorCard">
-        <p className="learningInspectorEyebrow">EPIC 9 · Task 9.2 / 9.3 / 9.4 / 9.5 / 9.8</p>
+        <p className="learningInspectorEyebrow">EPIC 9 · Task 9.2 / 9.3 / 9.4 / 9.5 / 9.8 / 9.10</p>
         <h3>{componentDetail?.label ?? selectedNode?.label ?? "Component Inspector"}</h3>
         <p>{componentDetail?.role ?? selectedNode?.shortDescription ?? "Select a node to inspect its role in the architecture."}</p>
         {componentDetailLoading ? <p className="eventMeta">Loading component details...</p> : null}

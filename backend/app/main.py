@@ -12,9 +12,18 @@ from pydantic import BaseModel, Field
 from app.learning_mode_data import (
     get_learning_architecture_payload,
     get_learning_component_payload,
+    get_learning_context_diff_payload,
     get_learning_context_packet_payload,
     get_learning_flow_payload,
+    get_learning_fallback_scripts_payload,
+    get_learning_maf_portability_payload,
     get_learning_metrics_education_payload,
+    get_learning_metrics_storytelling_payload,
+    get_learning_presenter_annotations_payload,
+    get_learning_quiz_checkpoints_payload,
+    get_learning_qa_anchors_payload,
+    get_learning_qa_payload,
+    get_learning_summary_handout_payload,
 )
 from app.redis_iris_tools import RDISyncLoop
 from app.replay_templates import ReplayTemplate, get_replay_template, list_replay_templates
@@ -485,9 +494,54 @@ def learning_context_packet() -> dict[str, Any]:
     return get_learning_context_packet_payload()
 
 
+@app.get("/api/learning/context-diff")
+def learning_context_diff() -> dict[str, Any]:
+    return get_learning_context_diff_payload()
+
+
 @app.get("/api/learning/metrics-education")
 def learning_metrics_education() -> dict[str, Any]:
     return get_learning_metrics_education_payload()
+
+
+@app.get("/api/learning/metrics-storytelling")
+def learning_metrics_storytelling() -> dict[str, Any]:
+    return get_learning_metrics_storytelling_payload()
+
+
+@app.get("/api/learning/audience-qa")
+def learning_audience_qa() -> dict[str, Any]:
+    return get_learning_qa_payload()
+
+
+@app.get("/api/learning/summary-handout")
+def learning_summary_handout() -> dict[str, Any]:
+    return get_learning_summary_handout_payload()
+
+
+@app.get("/api/learning/presenter-annotations")
+def learning_presenter_annotations() -> dict[str, Any]:
+    return get_learning_presenter_annotations_payload()
+
+
+@app.get("/api/learning/fallback-scripts")
+def learning_fallback_scripts() -> dict[str, Any]:
+    return get_learning_fallback_scripts_payload()
+
+
+@app.get("/api/learning/quiz-checkpoints")
+def learning_quiz_checkpoints() -> dict[str, Any]:
+    return get_learning_quiz_checkpoints_payload()
+
+
+@app.get("/api/learning/qa-anchors")
+def learning_qa_anchors() -> dict[str, Any]:
+    return get_learning_qa_anchors_payload()
+
+
+@app.get("/api/learning/maf-portability")
+def learning_maf_portability() -> dict[str, Any]:
+    return get_learning_maf_portability_payload()
 
 
 @app.websocket("/ws/events")

@@ -480,3 +480,506 @@ def get_learning_metrics_education_payload() -> dict[str, Any]:
             ],
         },
     }
+
+
+def get_learning_maf_portability_payload() -> dict[str, Any]:
+    return {
+        "status": "ok",
+        "mapping": [
+            {
+                "currentComponent": "LangGraph Orchestrator",
+                "mafEquivalent": "Agent Workflow / Orchestrator",
+                "portabilityNotes": "Graph flow and node boundaries map directly to workflow stages.",
+                "effort": "low",
+            },
+            {
+                "currentComponent": "Support, Incident, Account, Billing, Escalation Agents",
+                "mafEquivalent": "Specialized Agents",
+                "portabilityNotes": "Agent responsibilities remain unchanged; only runtime wrappers are adapted.",
+                "effort": "medium",
+            },
+            {
+                "currentComponent": "Context Retriever",
+                "mafEquivalent": "Shared Context Service / Tool",
+                "portabilityNotes": "Keep retrieval contract stable so MAF tools can call the same packet builder.",
+                "effort": "medium",
+            },
+            {
+                "currentComponent": "Redis Agent Memory",
+                "mafEquivalent": "Agent Memory Provider",
+                "portabilityNotes": "Memory keys and retention policy can stay intact with a thin adapter.",
+                "effort": "low",
+            },
+            {
+                "currentComponent": "Redis Search / Vector Search / Streams / JSON / Semantic Cache",
+                "mafEquivalent": "Data + Retrieval + Event Tooling",
+                "portabilityNotes": "Redis remains the operational context layer regardless of orchestration framework.",
+                "effort": "low",
+            },
+            {
+                "currentComponent": "Metrics Collector",
+                "mafEquivalent": "Evaluation / Telemetry Pipeline",
+                "portabilityNotes": "Carry over latency/token/memory/cache signals to keep before-after proof consistent.",
+                "effort": "low",
+            },
+        ],
+        "migrationPlan": [
+            "Preserve current context-packet schema as a framework-neutral contract.",
+            "Port orchestration edges from LangGraph to MAF workflow stages incrementally.",
+            "Keep Redis context, memory, and cache APIs stable and only swap orchestration adapters.",
+            "Run baseline-vs-IRIS parity checks after each migrated stage.",
+            "Cut over only after response quality and metrics remain within expected thresholds.",
+        ],
+        "teachingSummary": "LangGraph orchestrates and Redis operationalizes. MAF migration mostly changes orchestration plumbing, not operational context strategy.",
+    }
+
+
+def get_learning_context_diff_payload() -> dict[str, Any]:
+    return {
+        "status": "ok",
+        "baseline": {
+            "title": "Baseline Context Assembly",
+            "summary": "Each agent rebuilds context separately, increasing prompt size and inconsistency risk.",
+            "packet": {
+                "customer": {
+                    "name": "Acme Corp",
+                    "risk_level": "high",
+                    "renewal_date": "2026-07-15",
+                },
+                "facts": [
+                    "Open sev-1 ticket exists but has partial ownership metadata.",
+                    "Incident status is fetched from a separate lookup path.",
+                    "No unified event freshness marker is attached.",
+                ],
+                "memory": [
+                    "No durable cross-session memory attached by default.",
+                ],
+                "events": [
+                    "Recent deployment update may be missing or delayed in prompt assembly.",
+                ],
+                "prompt_shape": "broad and repetitive",
+            },
+        },
+        "iris": {
+            "title": "IRIS Shared Context Packet",
+            "summary": "Context Retriever assembles one compact, shared packet for all agents before generation.",
+            "packet": {
+                "customer": {
+                    "name": "Acme Corp",
+                    "risk_level": "high",
+                    "renewal_date": "2026-07-15",
+                },
+                "facts": [
+                    "Customer, ticket, and incident state merged through Redis Search + JSON.",
+                    "Active incident timeline and severity normalized before agent reasoning.",
+                    "Freshness anchored by latest operational stream event.",
+                ],
+                "memory": [
+                    "Customer was promised executive escalation if latency issues recur.",
+                    "Acme prefers concise executive communication.",
+                ],
+                "events": [
+                    "incident_update/mitigated replay event is included in live context.",
+                ],
+                "prompt_shape": "compact and targeted",
+            },
+        },
+        "narrative": [
+            "Baseline rebuilds context per agent. IRIS shares one context packet across agents.",
+            "Baseline misses memory continuity by default. IRIS injects durable commitments and preferences.",
+            "Baseline can drift on event freshness. IRIS anchors the packet on live operational stream updates.",
+            "Result: lower prompt tokens, fewer retrieval calls, and more consistent final responses.",
+        ],
+        "delta": {
+            "prompt_tokens": {
+                "baseline": 2620,
+                "iris": 1160,
+                "change_pct": -55.7,
+            },
+            "retrieval_calls": {
+                "baseline": "many per agent",
+                "iris": "shared pre-assembled",
+            },
+            "memory_continuity": {
+                "baseline": "weak",
+                "iris": "strong",
+            },
+        },
+    }
+
+
+def get_learning_metrics_storytelling_payload() -> dict[str, Any]:
+    return {
+        "status": "ok",
+        "chapters": [
+            {
+                "id": "story-1",
+                "title": "Set the baseline cost profile",
+                "narrative": "Start with baseline latency and token cost to anchor the business problem.",
+                "focusMetric": "baseline_cost",
+                "kpi": {
+                    "label": "Baseline Prompt Tokens",
+                    "value": 2620,
+                    "unit": "tokens",
+                },
+                "talkTrack": "Explain that repeated context assembly inflates prompt size before any quality gain.",
+            },
+            {
+                "id": "story-2",
+                "title": "Introduce IRIS context compression",
+                "narrative": "Show how one shared context packet replaces multiple repeated retrieval passes.",
+                "focusMetric": "prompt_reduction",
+                "kpi": {
+                    "label": "Prompt Token Reduction",
+                    "value": 55.7,
+                    "unit": "%",
+                },
+                "talkTrack": "Emphasize that this reduction comes from better context shaping, not lower answer quality.",
+            },
+            {
+                "id": "story-3",
+                "title": "Quantify latency impact",
+                "narrative": "Compare baseline and IRIS latency to make responsiveness gains visible.",
+                "focusMetric": "latency_delta",
+                "kpi": {
+                    "label": "Latency Avg Delta",
+                    "value": -4.43,
+                    "unit": "ms",
+                },
+                "talkTrack": "Frame this as user-facing speed plus lower compute time per request.",
+            },
+            {
+                "id": "story-4",
+                "title": "Show continuity and reuse",
+                "narrative": "Close with memory and cache readiness as compounding efficiency multipliers.",
+                "focusMetric": "continuity",
+                "kpi": {
+                    "label": "Memory Hits",
+                    "value": "0 -> 2",
+                    "unit": "per run",
+                },
+                "talkTrack": "Highlight that durable memory turns repeat interactions into faster, more consistent outcomes.",
+            },
+        ],
+        "pacing": {
+            "defaultStepMs": 3500,
+            "recommendedAudience": "executive",
+            "presentationHint": "Use auto-play for board-level demos and manual step mode for technical Q and A.",
+        },
+    }
+
+
+def get_learning_qa_payload() -> dict[str, Any]:
+    return {
+        "status": "ok",
+        "questions": [
+            {
+                "id": "qa-1",
+                "category": "architecture",
+                "question": "Where does LangGraph end and Redis IRIS begin?",
+                "answer": "LangGraph orchestrates sequence and agent routing. Redis IRIS provides shared operational context through search, memory, vectors, streams, JSON, and cache.",
+                "mappedComponents": ["langgraph", "context_retriever", "redis_search", "redis_agent_memory"],
+            },
+            {
+                "id": "qa-2",
+                "category": "performance",
+                "question": "Why are tokens and latency lower with IRIS?",
+                "answer": "IRIS assembles one compact context packet before agent reasoning, reducing repeated retrieval and duplicated prompt content.",
+                "mappedComponents": ["context_retriever", "semantic_cache", "metrics_collector"],
+            },
+            {
+                "id": "qa-3",
+                "category": "reliability",
+                "question": "How does the system stay aligned with live operational changes?",
+                "answer": "Redis Streams and shared context retrieval keep incident and event updates synchronized before response generation.",
+                "mappedComponents": ["redis_streams", "context_retriever", "incident_agent"],
+            },
+            {
+                "id": "qa-4",
+                "category": "portability",
+                "question": "Can this architecture move to MAF without redesigning data strategy?",
+                "answer": "Yes. Orchestration plumbing changes, but Redis context contracts, memory strategy, and retrieval interfaces stay intact.",
+                "mappedComponents": ["langgraph", "context_retriever", "redis_json", "metrics_collector"],
+            },
+            {
+                "id": "qa-5",
+                "category": "operations",
+                "question": "What makes this more production-ready than vector-only RAG?",
+                "answer": "It combines structured state, semantic retrieval, durable memory, live events, and caching in one shared operational context layer.",
+                "mappedComponents": ["redis_search", "redis_vector_search", "redis_agent_memory", "redis_streams", "semantic_cache"],
+            },
+        ],
+        "presenterHint": "Start with architecture questions, then move to performance and portability based on audience depth.",
+    }
+
+
+def get_learning_summary_handout_payload() -> dict[str, Any]:
+    return {
+        "status": "ok",
+        "title": "Operational AI with Redis IRIS - Learning Summary",
+        "audience": "Stakeholders, platform leaders, and customer operations teams",
+        "generatedFor": "Post-demo follow-up",
+        "sections": [
+            {
+                "id": "summary-1",
+                "heading": "Core Story",
+                "points": [
+                    "Before: agents coordinate through prompts and fragmented retrieval.",
+                    "After: agents coordinate through shared operational context with Redis IRIS.",
+                    "LangGraph orchestrates workflows while Redis IRIS operationalizes context and memory.",
+                ],
+            },
+            {
+                "id": "summary-2",
+                "heading": "Measured Outcomes",
+                "points": [
+                    "Prompt tokens reduced from 2620 to 1160 (-55.7%).",
+                    "Average latency improved by 4.43 ms in benchmark snapshots.",
+                    "Memory continuity improved from weak session-local behavior to durable cross-session recall.",
+                ],
+            },
+            {
+                "id": "summary-3",
+                "heading": "Operational Capabilities",
+                "points": [
+                    "Redis Search and RedisJSON provide precise structured context retrieval.",
+                    "Redis Vector Search adds similar-incident context for semantic grounding.",
+                    "Redis Streams keeps agents aligned with live operational events.",
+                    "Semantic cache reduces repeated LLM cost and response latency.",
+                ],
+            },
+            {
+                "id": "summary-4",
+                "heading": "Portability and Next Steps",
+                "points": [
+                    "The context contract can migrate to MAF with minimal data-layer redesign.",
+                    "Next enhancements: annotation modes, fallback scripts, and quiz checkpoints.",
+                    "Recommendation: continue with production hardening and broader benchmark scenarios.",
+                ],
+            },
+        ],
+        "takeaways": [
+            "Shared operational state outperforms prompt-only coordination in production-like workloads.",
+            "IRIS improves consistency, efficiency, and real-time awareness across multi-agent workflows.",
+            "The architecture is explainable to both technical and executive audiences through Learning Mode.",
+        ],
+        "exportMeta": {
+            "format": "json",
+            "filename": "learning-summary-handout.json",
+            "version": "1.0",
+        },
+    }
+
+
+def get_learning_presenter_annotations_payload() -> dict[str, Any]:
+    return {
+        "status": "ok",
+        "title": "Presenter Annotation Mode",
+        "defaultTrack": "executive",
+        "tracks": [
+            {
+                "id": "executive",
+                "label": "Executive",
+                "description": "Business-impact framing focused on risk, cost, and stakeholder outcomes.",
+                "sections": [
+                    {
+                        "id": "exec-1",
+                        "topic": "Architecture Difference",
+                        "talkTrack": "Baseline pipelines reassemble context repeatedly. IRIS uses one shared operational context layer that improves consistency and response quality.",
+                        "focusMetrics": ["prompt_tokens", "latency_ms_avg"],
+                    },
+                    {
+                        "id": "exec-2",
+                        "topic": "Operational Readiness",
+                        "talkTrack": "Live event awareness and memory continuity reduce escalation noise and improve customer trust in high-risk scenarios.",
+                        "focusMetrics": ["memory_hits", "cache_hits"],
+                    },
+                    {
+                        "id": "exec-3",
+                        "topic": "Investment Narrative",
+                        "talkTrack": "The same Redis context strategy is portable to MAF, so this investment supports both current delivery and future platform alignment.",
+                        "focusMetrics": ["portability_risk", "migration_effort"],
+                    },
+                ],
+            },
+            {
+                "id": "technical",
+                "label": "Technical",
+                "description": "Implementation framing focused on retrieval paths, context contracts, and orchestration boundaries.",
+                "sections": [
+                    {
+                        "id": "tech-1",
+                        "topic": "Flow Composition",
+                        "talkTrack": "LangGraph handles orchestration and edge transitions. Context Retriever builds packet state using Redis Search, JSON, vectors, streams, and memory adapters.",
+                        "focusMetrics": ["retrieval_calls", "context_packet_size"],
+                    },
+                    {
+                        "id": "tech-2",
+                        "topic": "State and Recall",
+                        "talkTrack": "Agent memory and semantic cache reduce repeated tool invocations while preserving continuity across sessions and agents.",
+                        "focusMetrics": ["memory_hits", "cache_hits", "tool_calls"],
+                    },
+                    {
+                        "id": "tech-3",
+                        "topic": "Portability Contract",
+                        "talkTrack": "Keep the context packet schema and Redis interfaces stable, then swap orchestration adapters for MAF migration with minimal data-plane disruption.",
+                        "focusMetrics": ["contract_stability", "adapter_effort"],
+                    },
+                ],
+            },
+        ],
+        "presenterHint": "Use executive track for business stakeholders first, then switch to technical track for implementation Q and A.",
+    }
+
+
+def get_learning_fallback_scripts_payload() -> dict[str, Any]:
+    return {
+        "status": "ok",
+        "title": "Guided Fallback Script Cards",
+        "defaultScenarioId": "fallback-1",
+        "scenarios": [
+            {
+                "id": "fallback-1",
+                "label": "No live stream updates",
+                "trigger": "Live incident events are not arriving during the demo.",
+                "script": [
+                    "We are switching to fallback mode while keeping the architecture view unchanged.",
+                    "In production, Redis Streams supplies this event feed. Here I will use the prepared timeline snapshot.",
+                    "Focus on the same outcome: shared context freshness and synchronized agent decisions.",
+                ],
+                "recommendedPanel": "Context Diff Narrative",
+            },
+            {
+                "id": "fallback-2",
+                "label": "Replay API unavailable",
+                "trigger": "Replay execution endpoint is temporarily unavailable.",
+                "script": [
+                    "We can continue with pre-scripted progression cards that mirror the same operational steps.",
+                    "Each step still maps to Redis context retrieval, memory continuity, and cache-aware response generation.",
+                    "This keeps the business and architecture narrative consistent without relying on live controls.",
+                ],
+                "recommendedPanel": "Metrics Storytelling Mode",
+            },
+            {
+                "id": "fallback-3",
+                "label": "Backend latency spike",
+                "trigger": "Response latency is temporarily high in the environment.",
+                "script": [
+                    "We will use benchmark snapshots captured from stable runs to compare baseline and IRIS behavior.",
+                    "The important point is directional proof: IRIS reduces prompt bloat and retrieval duplication.",
+                    "After the session, we can reproduce the run with full telemetry for trace-level inspection.",
+                ],
+                "recommendedPanel": "Exportable Learning Summary Handout",
+            },
+            {
+                "id": "fallback-4",
+                "label": "Frontend interaction issue",
+                "trigger": "Interactive controls or diagram gestures are degraded during presentation.",
+                "script": [
+                    "I will continue in narrated mode using static checkpoints from the same architecture model.",
+                    "LangGraph orchestration boundaries and Redis IRIS responsibilities remain identical.",
+                    "This fallback preserves learning objectives while we avoid relying on transient UI behavior.",
+                ],
+                "recommendedPanel": "Presenter Annotation Mode",
+            },
+        ],
+        "presenterHint": "Use fallback cards only when a live dependency is unstable; keep the core before-vs-after narrative unchanged.",
+    }
+
+
+def get_learning_quiz_checkpoints_payload() -> dict[str, Any]:
+    return {
+        "status": "ok",
+        "title": "Architecture Quiz Checkpoints",
+        "defaultCheckpointId": "quiz-1",
+        "checkpoints": [
+            {
+                "id": "quiz-1",
+                "chapter": "Before vs After Framing",
+                "prompt": "Which layer is responsible for shared operational state across agents?",
+                "options": [
+                    "LangGraph orchestrator",
+                    "Redis IRIS context layer",
+                    "Frontend replay panel",
+                    "Metrics storytelling controller",
+                ],
+                "correctOptionIndex": 1,
+                "explanation": "LangGraph coordinates workflow transitions, while Redis IRIS provides the shared operational state used by all agents.",
+                "relatedComponents": ["Context Retriever", "RedisJSON", "Redis Agent Memory"],
+            },
+            {
+                "id": "quiz-2",
+                "chapter": "Context Retrieval",
+                "prompt": "What is the best reason prompt tokens decrease with IRIS enabled?",
+                "options": [
+                    "The user message is shortened before inference",
+                    "The LLM runs with fewer output tokens only",
+                    "IRIS assembles compact relevant context instead of repeating broad retrieval",
+                    "Replay templates disable ticket and incident lookups",
+                ],
+                "correctOptionIndex": 2,
+                "explanation": "IRIS composes a compact context packet from structured facts, memory, vectors, and events, reducing duplicated prompt material.",
+                "relatedComponents": ["Redis Search", "Redis Vector Search", "Semantic Cache"],
+            },
+            {
+                "id": "quiz-3",
+                "chapter": "Live Operations",
+                "prompt": "Which Redis capability keeps agents aware of latest incident updates during the demo?",
+                "options": [
+                    "Redis Streams",
+                    "RedisJSON only",
+                    "LangCache only",
+                    "Benchmark trend history",
+                ],
+                "correctOptionIndex": 0,
+                "explanation": "Redis Streams carries operational event updates that are consumed by the app and reflected in shared context.",
+                "relatedComponents": ["Redis Streams", "Event Bus", "Live Events Panel"],
+            },
+        ],
+        "presenterHint": "Use one checkpoint between chapters to keep the audience engaged and reinforce why IRIS changes outcomes.",
+    }
+
+
+def get_learning_qa_anchors_payload() -> dict[str, Any]:
+    return {
+        "status": "ok",
+        "title": "Live Q and A Answer Anchors",
+        "anchors": [
+            {
+                "id": "anchor-1",
+                "question": "Where does LangGraph end and Redis IRIS begin?",
+                "answerSummary": "LangGraph orchestrates workflow steps while IRIS assembles and serves shared operational context.",
+                "sectionId": "architecture-overview",
+                "targetLabel": "Architecture Overview",
+            },
+            {
+                "id": "anchor-2",
+                "question": "Why do tokens go down with IRIS?",
+                "answerSummary": "IRIS sends compact context packets instead of repeated, broad retrieval payloads.",
+                "sectionId": "context-diff-narrative",
+                "targetLabel": "Context Diff Narrative",
+            },
+            {
+                "id": "anchor-3",
+                "question": "How do you prove memory continuity?",
+                "answerSummary": "Use context packet memory hits and live event context to show cross-session recall.",
+                "sectionId": "context-packet-viewer",
+                "targetLabel": "Context Packet Viewer",
+            },
+            {
+                "id": "anchor-4",
+                "question": "What proves business impact quickly?",
+                "answerSummary": "Walk through chapter KPIs that connect lower tokens and latency to operational outcomes.",
+                "sectionId": "metrics-storytelling-mode",
+                "targetLabel": "Metrics Storytelling Mode",
+            },
+            {
+                "id": "anchor-5",
+                "question": "How do we handle unstable live demo conditions?",
+                "answerSummary": "Switch to guided fallback scripts while keeping architecture and outcomes narrative unchanged.",
+                "sectionId": "guided-fallback-script-cards",
+                "targetLabel": "Guided Fallback Script Cards",
+            },
+        ],
+        "presenterHint": "Use anchors to jump to the strongest proof panel in under five seconds during audience interruptions.",
+    }

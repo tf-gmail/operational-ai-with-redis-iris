@@ -32,6 +32,16 @@ ACCOUNT_OWNERS = [
     "Priya Shah",
     "Noah Martinez",
 ]
+CUSTOMER_INDUSTRIES = [
+    "SaaS",
+    "FinTech",
+    "Healthcare",
+    "Retail",
+    "Manufacturing",
+    "Logistics",
+]
+CUSTOMER_REGIONS = ["north_america", "emea", "apac", "latam"]
+CONTRACT_BILLING_MODELS = ["annual_prepaid", "annual_net_30", "monthly"]
 STAKEHOLDER_FIRST_NAMES = [
     "Jordan",
     "Taylor",
@@ -73,8 +83,14 @@ PREFERENCES = [
     "Technical deep dive appendix",
 ]
 SENTIMENTS = ["champion", "neutral", "skeptical"]
+COMMUNICATION_CHANNELS = ["email", "slack", "teams", "phone"]
+COMMUNICATION_CADENCES = ["daily", "twice-weekly", "weekly", "incident-only"]
+TIMEZONES = ["America/Los_Angeles", "America/New_York", "Europe/Berlin", "Asia/Singapore"]
+COMMUNICATION_STYLES = ["concise", "executive", "technical", "collaborative"]
 SEVERITIES = ["sev-1", "sev-2", "sev-3"]
 SERVICES = ["search-api", "billing-api", "identity-api", "events-api", "sync-worker"]
+DEPLOYMENT_TRACKS = ["weekly-release", "hotfix", "infra-rollout", "schema-migration"]
+IMPACT_SCOPES = ["single_customer", "regional_cluster", "shared_control_plane"]
 INCIDENT_STATUSES = ["investigating", "mitigated", "monitoring"]
 INCIDENT_TIMELINE_STAGES = ["investigating", "mitigated", "monitoring", "resolved"]
 TICKET_TIMELINE_STAGES = ["open", "in_progress", "pending_customer", "resolved"]
@@ -84,6 +100,27 @@ TICKET_SUMMARIES = [
     "Delayed webhook processing for CRM sync",
     "Dashboard widgets showing stale usage data",
     "Escalation path needs executive-ready update",
+]
+TICKET_ORIGINS = ["customer_report", "incident_followup", "executive_escalation"]
+TREND_MONTHS = ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06"]
+USAGE_ANOMALIES = ["declining_adoption", "weekend_dropoff", "integration_failure_spike", "burst_usage"]
+MEMORY_PROMISES = [
+    "Provide executive escalation within 2 hours for sev-1 recurrences",
+    "Share weekly reliability summary with incident owners",
+    "Deliver customer-ready RCA within 48 hours",
+    "Route renewal-risk incidents to account leadership immediately",
+]
+MEMORY_FRUSTRATIONS = [
+    "Repeated incident updates without clear owner",
+    "Escalation summaries arrive too late for leadership briefings",
+    "Integration issues resurface near renewal milestones",
+    "Stakeholder updates are too technical for executive audiences",
+]
+MEMORY_PREFERENCES = [
+    "Executive summaries first",
+    "Timeline and risk updates",
+    "Action items with owners",
+    "Technical deep dive appendix",
 ]
 RISK_WEIGHTS = [
     ("low", 0.55),
@@ -109,6 +146,121 @@ def weighted_choice(rng: random.Random) -> str:
     return RISK_WEIGHTS[-1][0]
 
 
+def _build_usage_profile(arr: int, risk_level: str, health_score: int, rng: random.Random) -> dict[str, object]:
+    seats_provisioned = max(20, min(2200, int(arr / 2800) + rng.randint(0, 24)))
+
+    if risk_level == "high":
+        start_ratio = rng.uniform(0.42, 0.68)
+        drift_min, drift_max = -0.08, -0.015
+    elif risk_level == "medium":
+        start_ratio = rng.uniform(0.50, 0.78)
+        drift_min, drift_max = -0.04, 0.02
+    else:
+        start_ratio = rng.uniform(0.62, 0.90)
+        drift_min, drift_max = -0.01, 0.05
+
+    current_ratio = min(0.95, max(0.22, start_ratio + (health_score - 60) * 0.0015))
+
+    monthly_active: list[dict[str, object]] = []
+    prior_active = None
+    decline_streak = 0
+
+    for month in TREND_MONTHS:
+        drift = rng.uniform(drift_min, drift_max)
+        jitter = rng.uniform(-0.01, 0.01)
+        current_ratio = min(0.95, max(0.16, current_ratio + drift + jitter))
+
+        active_seats = int(seats_provisioned * current_ratio)
+        if prior_active is None:
+            delta_pct = 0.0
+        else:
+            delta_pct = round(((active_seats - prior_active) / max(prior_active, 1)) * 100, 2)
+            decline_streak = decline_streak + 1 if active_seats < prior_active else 0
+
+        monthly_active.append(
+            {
+                "month": month,
+                "active_seats": active_seats,
+                "delta_pct": delta_pct,
+            }
+        )
+        prior_active = active_seats
+
+    active_seats = int(monthly_active[-1]["active_seats"])
+    adoption_rate = round((active_seats / max(seats_provisioned, 1)) * 100, 1)
+
+    anomalies: list[str] = []
+    if decline_streak >= 2 or (risk_level == "high" and adoption_rate < 55):
+        anomalies.append("declining_adoption")
+    if risk_level != "low" and rng.random() > 0.72:
+        anomalies.append("integration_failure_spike")
+    if risk_level == "low" and rng.random() > 0.78:
+        anomalies.append("burst_usage")
+    if rng.random() > 0.84:
+        anomalies.append("weekend_dropoff")
+
+    # Keep anomalies stable and deduplicated.
+    deduped = []
+    for anomaly in anomalies:
+        if anomaly in USAGE_ANOMALIES and anomaly not in deduped:
+            deduped.append(anomaly)
+
+    return {
+        "seats_provisioned": seats_provisioned,
+        "active_seats": active_seats,
+        "adoption_rate_pct": adoption_rate,
+        "monthly_active_trend": monthly_active,
+        "anomalies": deduped,
+    }
+
+
+def _build_memory_profile(index: int, risk_level: str, health_score: int, rng: random.Random) -> dict[str, object]:
+    escalation_count = 1 + (1 if risk_level != "low" else 0) + (1 if health_score <= 45 else 0)
+    has_open_commitment = risk_level == "high" or health_score <= 50 or rng.random() > 0.72
+
+    preference = MEMORY_PREFERENCES[index % len(MEMORY_PREFERENCES)]
+    promise = MEMORY_PROMISES[(index + (1 if has_open_commitment else 0)) % len(MEMORY_PROMISES)]
+    frustration = MEMORY_FRUSTRATIONS[(index + (2 if risk_level == "high" else 0)) % len(MEMORY_FRUSTRATIONS)]
+
+    memory_events = [
+        {
+            "timestamp": "2026-03-12T10:30:00Z",
+            "type": "escalation",
+            "summary": "Customer escalation triggered after reliability concern.",
+        },
+        {
+            "timestamp": "2026-04-09T15:00:00Z",
+            "type": "commitment",
+            "summary": promise,
+        },
+        {
+            "timestamp": "2026-05-04T09:45:00Z",
+            "type": "preference",
+            "summary": f"Preference confirmed: {preference}.",
+        },
+    ]
+
+    if risk_level != "low":
+        memory_events.append(
+            {
+                "timestamp": "2026-05-18T11:20:00Z",
+                "type": "frustration",
+                "summary": frustration,
+            }
+        )
+
+    memory_events.sort(key=lambda item: item["timestamp"])
+
+    return {
+        "escalation_count": escalation_count,
+        "open_commitment": has_open_commitment,
+        "promise": promise,
+        "frustration": frustration,
+        "preference": preference,
+        "memory_timeline": memory_events,
+    }
+
+
 def generate_customer(index: int, rng: random.Random) -> dict[str, object]:
     prefix = CUSTOMER_PREFIXES[index % len(CUSTOMER_PREFIXES)]
     suffix = CUSTOMER_SUFFIXES[(index // len(CUSTOMER_PREFIXES)) % len(CUSTOMER_SUFFIXES)]
@@ -124,6 +276,21 @@ def generate_customer(index: int, rng: random.Random) -> dict[str, object]:
     elif health_score <= 65 and risk_level == "low":
         risk_level = "medium"
 
+    usage_profile = _build_usage_profile(arr, risk_level, health_score, rng)
+    memory_profile = _build_memory_profile(index, risk_level, health_score, rng)
+    account_tier = "enterprise" if arr >= 1_000_000 else "mid_market" if arr >= 300_000 else "growth"
+    region = CUSTOMER_REGIONS[(index + rng.randint(0, len(CUSTOMER_REGIONS) - 1)) % len(CUSTOMER_REGIONS)]
+    industry = CUSTOMER_INDUSTRIES[(index + rng.randint(0, len(CUSTOMER_INDUSTRIES) - 1)) % len(CUSTOMER_INDUSTRIES)]
+    term_months = 36 if arr >= 1_200_000 else 24 if arr >= 500_000 else 12
+    contract = {
+        "contract_id": f"ctr-{index + 1:04d}",
+        "term_months": term_months,
+        "billing_model": CONTRACT_BILLING_MODELS[(index + term_months // 12) % len(CONTRACT_BILLING_MODELS)],
+        "next_invoice_date": (renewal_date - timedelta(days=30)).isoformat(),
+        "auto_renew": risk_level != "high",
+        "sla_tier": "platinum" if arr >= 1_000_000 else "gold" if arr >= 350_000 else "silver",
+    }
+
     return {
         "id": f"cust-{index + 1:04d}",
         "name": name,
@@ -131,7 +298,13 @@ def generate_customer(index: int, rng: random.Random) -> dict[str, object]:
         "renewal_date": renewal_date.isoformat(),
         "health_score": health_score,
         "risk_level": risk_level,
+        "industry": industry,
+        "region": region,
+        "account_tier": account_tier,
+        "contract": contract,
         "account_owner": ACCOUNT_OWNERS[index % len(ACCOUNT_OWNERS)],
+        "usage": usage_profile,
+        "memory_profile": memory_profile,
     }
 
 
@@ -139,6 +312,20 @@ def _stakeholder_name(index: int) -> str:
     first = STAKEHOLDER_FIRST_NAMES[index % len(STAKEHOLDER_FIRST_NAMES)]
     last = STAKEHOLDER_LAST_NAMES[(index // len(STAKEHOLDER_FIRST_NAMES)) % len(STAKEHOLDER_LAST_NAMES)]
     return f"{first} {last}"
+
+
+def _sentiment_for_customer(customer: dict[str, object], index: int, local_idx: int, rng: random.Random) -> str:
+    risk = str(customer.get("risk_level", "medium"))
+    health = int(customer.get("health_score", 60))
+
+    if risk == "high" or health <= 45:
+        weighted = ["skeptical", "neutral", "neutral", "champion"]
+    elif risk == "low" and health >= 75:
+        weighted = ["champion", "champion", "neutral", "skeptical"]
+    else:
+        weighted = ["neutral", "neutral", "champion", "skeptical"]
+
+    return weighted[(index + local_idx + rng.randint(0, 2)) % len(weighted)]
 
 
 def generate_stakeholders(customer: dict[str, object], index: int, rng: random.Random) -> list[dict[str, object]]:
@@ -153,7 +340,12 @@ def generate_stakeholders(customer: dict[str, object], index: int, rng: random.R
                 "name": _stakeholder_name(global_idx),
                 "role": STAKEHOLDER_ROLES[global_idx % len(STAKEHOLDER_ROLES)],
                 "preference": PREFERENCES[global_idx % len(PREFERENCES)],
-                "sentiment": SENTIMENTS[global_idx % len(SENTIMENTS)],
+                "sentiment": _sentiment_for_customer(customer, index, local_idx, rng),
+                "preferred_channel": COMMUNICATION_CHANNELS[global_idx % len(COMMUNICATION_CHANNELS)],
+                "update_cadence": COMMUNICATION_CADENCES[(global_idx + local_idx) % len(COMMUNICATION_CADENCES)],
+                "communication_style": COMMUNICATION_STYLES[(global_idx + index) % len(COMMUNICATION_STYLES)],
+                "timezone": TIMEZONES[(global_idx + local_idx) % len(TIMEZONES)],
+                "response_sla_hours": 4 + ((global_idx + local_idx) % 4) * 2,
                 "is_primary": local_idx == 0,
             }
         )
@@ -164,6 +356,7 @@ def generate_tickets(
     customer: dict[str, object],
     index: int,
     stakeholders: list[dict[str, object]],
+    incidents: list[dict[str, object]],
     rng: random.Random,
 ) -> list[dict[str, object]]:
     ticket_count = 1 + (1 if rng.random() > 0.45 else 0)
@@ -171,17 +364,34 @@ def generate_tickets(
         ticket_count += 1
 
     tickets: list[dict[str, object]] = []
+    incident_ids = [str(incident.get("incident_id", "")) for incident in incidents if incident.get("incident_id")]
+
     for local_idx in range(ticket_count):
         created_at = date(2026, 1, 1) + timedelta(days=rng.randint(0, 145))
         owner = stakeholders[local_idx % len(stakeholders)]
         timeline = _build_ticket_timeline(created_at.isoformat(), rng)
+        ticket_id = f"tkt-{index + 1:04d}-{local_idx + 1}"
+
+        if local_idx > 0 and str(tickets[-1].get("severity", "")) == "sev-1":
+            origin = "executive_escalation"
+        elif incident_ids and (local_idx == 0 or rng.random() > 0.65):
+            origin = "incident_followup"
+        else:
+            origin = TICKET_ORIGINS[0]
+
+        related_incident_id = incident_ids[(index + local_idx) % len(incident_ids)] if incident_ids and origin != "customer_report" else None
+        escalates_ticket_id = str(tickets[-1]["ticket_id"]) if local_idx > 0 and origin == "executive_escalation" else None
+
         tickets.append(
             {
-                "ticket_id": f"tkt-{index + 1:04d}-{local_idx + 1}",
+                "ticket_id": ticket_id,
                 "customer_id": customer["id"],
                 "stakeholder_id": owner["stakeholder_id"],
                 "severity": SEVERITIES[(index + local_idx) % len(SEVERITIES)],
                 "summary": TICKET_SUMMARIES[(index + local_idx) % len(TICKET_SUMMARIES)],
+                "origin": origin,
+                "related_incident_id": related_incident_id,
+                "escalates_ticket_id": escalates_ticket_id,
                 "status": str(timeline[-1]["status"]),
                 "created_at": created_at.isoformat(),
                 "timeline": timeline,
@@ -201,6 +411,18 @@ def generate_incidents(customer: dict[str, object], index: int, rng: random.Rand
         base_day = 80 + rng.randint(0, 120)
         updated = date(2026, 1, 1) + timedelta(days=base_day)
         timeline = _build_incident_timeline(updated.isoformat(), rng)
+        risk_level = str(customer.get("risk_level", "medium"))
+        customer_arr = int(customer.get("arr", 0))
+        impact_multiplier = 0.62 if risk_level == "high" else 0.44 if risk_level == "medium" else 0.28
+        affected_revenue = int(customer_arr * impact_multiplier)
+        affected_seats = max(12, int(affected_revenue / 5400))
+
+        deployment_track = DEPLOYMENT_TRACKS[(index + local_idx) % len(DEPLOYMENT_TRACKS)]
+        was_deployment_triggered = (index + local_idx) % 2 == 0 or risk_level == "high"
+        root_cause = (
+            "deployment_failure" if was_deployment_triggered else "service_regression"
+        )
+
         incidents.append(
             {
                 "incident_id": f"inc-{index + 1:04d}-{local_idx + 1}",
@@ -211,6 +433,19 @@ def generate_incidents(customer: dict[str, object], index: int, rng: random.Rand
                 "updated_at": f"{updated.isoformat()}T08:00:00Z",
                 "timeline": timeline,
                 "recurrence_count": sum(1 for entry in timeline if entry["status"] == "investigating") - 1,
+                "impact_scope": IMPACT_SCOPES[(index + local_idx) % len(IMPACT_SCOPES)],
+                "customer_impact": {
+                    "affected_seats": affected_seats,
+                    "affected_revenue_usd": affected_revenue,
+                    "downtime_minutes": 35 + ((index + local_idx) % 7) * 9,
+                    "renewal_risk_delta": 5 + ((index + local_idx) % 4) * 3,
+                },
+                "deployment_context": {
+                    "deployment_id": f"dep-{index + 1:04d}-{local_idx + 1}",
+                    "track": deployment_track,
+                    "triggered_by_deployment": was_deployment_triggered,
+                    "root_cause": root_cause,
+                },
             }
         )
     return incidents
@@ -256,6 +491,7 @@ def _build_incident_timeline(base_day_iso: str, rng: random.Random) -> list[dict
 
 
 def build_event_stream(
+    customers: list[dict[str, object]],
     tickets: list[dict[str, object]],
     incidents: list[dict[str, object]],
 ) -> list[dict[str, str]]:
@@ -295,6 +531,51 @@ def build_event_stream(
                 }
             )
 
+    # Add deterministic support-note events linked to primary tickets.
+    for ticket in tickets:
+        customer_id = str(ticket.get("customer_id", ""))
+        ticket_id = str(ticket.get("ticket_id", ""))
+        status = str(ticket.get("status", "open"))
+        events.append(
+            {
+                "event_type": "support_note",
+                "entity_id": ticket_id,
+                "customer_id": customer_id,
+                "status": status,
+                "timestamp": f"{str(ticket.get('created_at', '2026-01-01'))}T17:30:00Z",
+                "message": "Support playbook updated with next escalation owner and ETA.",
+            }
+        )
+
+    # Emit customer-message and deployment events for replay diversity.
+    for customer in customers:
+        customer_id = str(customer.get("id", ""))
+        customer_name = str(customer.get("name", "Customer"))
+        risk = str(customer.get("risk_level", "medium"))
+
+        events.append(
+            {
+                "event_type": "customer_message",
+                "entity_id": customer_id,
+                "customer_id": customer_id,
+                "status": "received",
+                "timestamp": "2026-05-20T10:15:00Z",
+                "message": f"{customer_name} requests an update on service reliability and renewal impact.",
+            }
+        )
+
+        deploy_status = "degraded" if risk == "high" else "stable"
+        events.append(
+            {
+                "event_type": "deployment_event",
+                "entity_id": f"deploy-{customer_id}",
+                "customer_id": customer_id,
+                "status": deploy_status,
+                "timestamp": "2026-05-20T11:00:00Z",
+                "message": "Deployment completed; post-deploy telemetry captured for operational review.",
+            }
+        )
+
     events.sort(key=lambda row: row.get("timestamp", ""))
     return events
 
@@ -308,8 +589,8 @@ def generate_dataset(count: int) -> dict[str, object]:
 
     for index, customer in enumerate(customers):
         customer_stakeholders = generate_stakeholders(customer, index, rng)
-        customer_tickets = generate_tickets(customer, index, customer_stakeholders, rng)
         customer_incidents = generate_incidents(customer, index, rng)
+        customer_tickets = generate_tickets(customer, index, customer_stakeholders, customer_incidents, rng)
 
         stakeholders.extend(customer_stakeholders)
         tickets.extend(customer_tickets)
@@ -323,7 +604,61 @@ def generate_dataset(count: int) -> dict[str, object]:
         "renewal_date": "2026-07-15",
         "health_score": 41,
         "risk_level": "high",
+        "industry": "SaaS",
+        "region": "north_america",
+        "account_tier": "mid_market",
+        "contract": {
+            "contract_id": "ctr-acme",
+            "term_months": 24,
+            "billing_model": "annual_net_30",
+            "next_invoice_date": "2026-06-15",
+            "auto_renew": False,
+            "sla_tier": "gold",
+        },
         "account_owner": "Sofia Patel",
+        "usage": {
+            "seats_provisioned": 176,
+            "active_seats": 82,
+            "adoption_rate_pct": 46.6,
+            "monthly_active_trend": [
+                {"month": "2026-01", "active_seats": 124, "delta_pct": 0.0},
+                {"month": "2026-02", "active_seats": 118, "delta_pct": -4.84},
+                {"month": "2026-03", "active_seats": 109, "delta_pct": -7.63},
+                {"month": "2026-04", "active_seats": 98, "delta_pct": -10.09},
+                {"month": "2026-05", "active_seats": 90, "delta_pct": -8.16},
+                {"month": "2026-06", "active_seats": 82, "delta_pct": -8.89},
+            ],
+            "anomalies": ["declining_adoption", "integration_failure_spike"],
+        },
+        "memory_profile": {
+            "escalation_count": 3,
+            "open_commitment": True,
+            "promise": "Provide executive escalation within 2 hours for sev-1 recurrences",
+            "frustration": "Escalation summaries arrive too late for leadership briefings",
+            "preference": "Executive summaries first",
+            "memory_timeline": [
+                {
+                    "timestamp": "2026-03-12T10:30:00Z",
+                    "type": "escalation",
+                    "summary": "Customer escalation triggered after reliability concern.",
+                },
+                {
+                    "timestamp": "2026-04-09T15:00:00Z",
+                    "type": "commitment",
+                    "summary": "Provide executive escalation within 2 hours for sev-1 recurrences",
+                },
+                {
+                    "timestamp": "2026-05-04T09:45:00Z",
+                    "type": "preference",
+                    "summary": "Preference confirmed: Executive summaries first.",
+                },
+                {
+                    "timestamp": "2026-05-18T11:20:00Z",
+                    "type": "frustration",
+                    "summary": "Escalation summaries arrive too late for leadership briefings",
+                },
+            ],
+        },
     }
 
     stakeholders = [
@@ -334,6 +669,11 @@ def generate_dataset(count: int) -> dict[str, object]:
             "role": "VP Engineering",
             "preference": "Executive summaries first",
             "sentiment": "skeptical",
+            "preferred_channel": "slack",
+            "update_cadence": "daily",
+            "communication_style": "executive",
+            "timezone": "America/Los_Angeles",
+            "response_sla_hours": 4,
             "is_primary": True,
         },
         {
@@ -343,6 +683,11 @@ def generate_dataset(count: int) -> dict[str, object]:
             "role": "Director of IT",
             "preference": "Timeline and risk updates",
             "sentiment": "neutral",
+            "preferred_channel": "email",
+            "update_cadence": "twice-weekly",
+            "communication_style": "technical",
+            "timezone": "America/New_York",
+            "response_sla_hours": 6,
             "is_primary": False,
         },
     ] + [row for row in stakeholders if row["customer_id"] != "cust-0001"]
@@ -373,6 +718,19 @@ def generate_dataset(count: int) -> dict[str, object]:
                 },
             ],
             "recurrence_count": 0,
+            "impact_scope": "shared_control_plane",
+            "customer_impact": {
+                "affected_seats": 118,
+                "affected_revenue_usd": 302000,
+                "downtime_minutes": 96,
+                "renewal_risk_delta": 12,
+            },
+            "deployment_context": {
+                "deployment_id": "dep-acme-0412",
+                "track": "hotfix",
+                "triggered_by_deployment": True,
+                "root_cause": "deployment_failure",
+            },
         }
     ] + [row for row in incidents if row["customer_id"] != "cust-0001"]
 
@@ -383,6 +741,9 @@ def generate_dataset(count: int) -> dict[str, object]:
             "stakeholder_id": "stk-acme-001",
             "severity": "sev-1",
             "summary": "Customer reports repeated outages and renewal concern.",
+            "origin": "incident_followup",
+            "related_incident_id": "inc-2026-0412",
+            "escalates_ticket_id": None,
             "status": "in_progress",
             "created_at": "2026-05-22",
             "timeline": [
@@ -404,6 +765,9 @@ def generate_dataset(count: int) -> dict[str, object]:
             "stakeholder_id": "stk-acme-002",
             "severity": "sev-2",
             "summary": "Escalation path needs executive-ready update",
+            "origin": "executive_escalation",
+            "related_incident_id": "inc-2026-0412",
+            "escalates_ticket_id": "tkt-acme-001",
             "status": "pending_customer",
             "created_at": "2026-05-24",
             "timeline": [
@@ -421,15 +785,17 @@ def generate_dataset(count: int) -> dict[str, object]:
         },
     ] + [row for row in tickets if row["customer_id"] != "cust-0001"]
 
-    event_stream = build_event_stream(tickets, incidents)
+    event_stream = build_event_stream(customers, tickets, incidents)
 
     risk_distribution = dict(Counter(str(customer["risk_level"]) for customer in customers))
+    region_distribution = dict(Counter(str(customer["region"]) for customer in customers))
+    tier_distribution = dict(Counter(str(customer["account_tier"]) for customer in customers))
 
     return {
         "generator": {
             "seed": RNG_SEED,
             "count": count,
-            "version": 2,
+            "version": 9,
             "linked_entities": {
                 "customers": len(customers),
                 "stakeholders": len(stakeholders),
@@ -437,6 +803,10 @@ def generate_dataset(count: int) -> dict[str, object]:
                 "incidents": len(incidents),
             },
             "risk_distribution": risk_distribution,
+            "customer_distribution": {
+                "by_region": region_distribution,
+                "by_account_tier": tier_distribution,
+            },
         },
         "customers": customers,
         "stakeholders": stakeholders,
